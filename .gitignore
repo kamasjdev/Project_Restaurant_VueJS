@@ -347,3 +347,5 @@ healthchecksdb
 /kopia
 /schemat_klas_Core.PNG
 /schemat_klas.pdf
+
+*.db
