@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Restaurant.Application.IoC;
+using Restaurant.Infrastructure;
 using Restaurant.Infrastructure.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     autofacBuilder.RegisterModule(new InfrastructureModule());
 });
 builder.Services.AddControllers();
+builder.Services.AddFluentMigrator(builder.Configuration);
 
 var app = builder.Build();
 

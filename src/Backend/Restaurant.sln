@@ -5,11 +5,13 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Api", "Restaurant.Api\Restaurant.Api.csproj", "{26101208-C299-4E89-90FF-B7CE4334AFC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Infrastructure", "Restaurant.Infrastructure\Restaurant.Infrastructure.csproj", "{E560D0DE-2E39-403D-A312-C0BB1D95F5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Infrastructure", "Restaurant.Infrastructure\Restaurant.Infrastructure.csproj", "{E560D0DE-2E39-403D-A312-C0BB1D95F5E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Application", "Restaurant.Application\Restaurant.Application.csproj", "{2A269DAB-B34E-4878-9C90-5FA765B42C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Application", "Restaurant.Application\Restaurant.Application.csproj", "{2A269DAB-B34E-4878-9C90-5FA765B42C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Domain", "Restaurant.Domain\Restaurant.Domain.csproj", "{C224C76D-54B5-4059-B318-86D245DEB0EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Domain", "Restaurant.Domain\Restaurant.Domain.csproj", "{C224C76D-54B5-4059-B318-86D245DEB0EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Migrations", "Restaurant.Migrations\Restaurant.Migrations.csproj", "{DC311DD1-A819-4D96-B606-6A9ED68DD078}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C224C76D-54B5-4059-B318-86D245DEB0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C224C76D-54B5-4059-B318-86D245DEB0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C224C76D-54B5-4059-B318-86D245DEB0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC311DD1-A819-4D96-B606-6A9ED68DD078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC311DD1-A819-4D96-B606-6A9ED68DD078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC311DD1-A819-4D96-B606-6A9ED68DD078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC311DD1-A819-4D96-B606-6A9ED68DD078}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
