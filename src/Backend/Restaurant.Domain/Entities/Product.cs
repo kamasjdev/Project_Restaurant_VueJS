@@ -13,6 +13,15 @@ namespace Restaurant.Domain.Entities
         public IEnumerable<Order> Orders => _orders;
         private IList<Order> _orders = new List<Order>();
 
+        public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null)
+        {
+            Id = id;
+            ChangeProductName(productName);
+            ChangePrice(price);
+            _orders = orders.ToList() ?? new List<Order>();
+            ProductKind = productKind;
+        }
+
         public void ChangePrice(Price price)
         {
             Price = price;

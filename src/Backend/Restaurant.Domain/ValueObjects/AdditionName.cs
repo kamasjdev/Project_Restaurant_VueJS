@@ -2,9 +2,11 @@
 
 namespace Restaurant.Domain.ValueObjects
 {
-    public sealed class AdditionName
+    public class AdditionName
     {
         public string Value { get; }
+
+        protected AdditionName() { }
 
         public AdditionName(string addtionName)
         {

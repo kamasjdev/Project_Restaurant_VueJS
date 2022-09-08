@@ -6,6 +6,8 @@ namespace Restaurant.Domain.Entities
     {
         public Guid Value { get; }
 
+        protected EntityId() { }
+
         public EntityId(Guid value)
         {
             if (value == Guid.Empty)

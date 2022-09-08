@@ -9,10 +9,6 @@ namespace Restaurant.Domain.Entities
         public Price Price { get; private set; }
         public ProductKind ProductKind { get; }
 
-        private Addition()
-        {
-        }
-
         public Addition(EntityId id, AdditionName additionName, Price price, ProductKind additionKind)
         {
             Id = id;

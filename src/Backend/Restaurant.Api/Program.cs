@@ -11,7 +11,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(autofacBuilder =>
 {
     autofacBuilder.RegisterModule(new ApplicationModule());
-    autofacBuilder.RegisterModule(new InfrastructureModule());
+    autofacBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
 builder.Services.AddControllers();
 builder.Services.AddFluentMigrator(builder.Configuration);

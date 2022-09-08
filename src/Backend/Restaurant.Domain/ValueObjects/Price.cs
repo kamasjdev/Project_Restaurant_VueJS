@@ -2,9 +2,11 @@
 
 namespace Restaurant.Domain.ValueObjects
 {
-    public sealed class Price
+    public class Price
     {
         public decimal Value { get; }
+
+        protected Price() { }
 
         public Price(decimal price)
         {
