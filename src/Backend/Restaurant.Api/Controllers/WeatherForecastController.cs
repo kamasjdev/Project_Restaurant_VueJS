@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Domain.Repositories;
 
 namespace Restaurant.Api.Controllers
 {
@@ -8,12 +9,12 @@ namespace Restaurant.Api.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IAdditonRepository additonRepository)
         {
             _logger = logger;
         }
