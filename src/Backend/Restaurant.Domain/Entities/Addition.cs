@@ -1,7 +1,6 @@
-﻿using Restaurant.Domain.Entities;
-using Restaurant.Domain.ValueObjects;
+﻿using Restaurant.Domain.ValueObjects;
 
-namespace Restaurant.Domain
+namespace Restaurant.Domain.Entities
 {
     public class Addition
     {
