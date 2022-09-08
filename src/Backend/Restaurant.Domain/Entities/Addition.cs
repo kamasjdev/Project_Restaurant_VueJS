@@ -5,7 +5,7 @@ namespace Restaurant.Domain
 {
     public class Addition
     {
-        public EntityId Id { get; set; }
+        public EntityId Id { get; }
         public AdditionName AdditionName { get; private set; }
         public Price Price { get; private set; }
         public ProductKind ProductKind { get; }
