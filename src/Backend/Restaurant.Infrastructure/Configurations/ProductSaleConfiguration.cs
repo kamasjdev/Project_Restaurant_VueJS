@@ -17,6 +17,18 @@ namespace Restaurant.Infrastructure.Configurations
                 map.Column(nameof(ProductSalePoco.ProductSaleState));
                 map.Type<EnumStringType<ProductSaleState>>();
             });
+            ManyToOne(p => p.Order, map =>
+            {
+                map.Column("OrderId");
+            });
+            ManyToOne(p => p.Product, map =>
+            {
+                map.Column("ProductId");
+            });
+            ManyToOne(p => p.Addition, map =>
+            {
+                map.Column("AdditionId");
+            });
         }
     }
 }

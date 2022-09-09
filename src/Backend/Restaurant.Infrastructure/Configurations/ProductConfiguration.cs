@@ -17,6 +17,11 @@ namespace Restaurant.Infrastructure.Configurations
                 map.Column(nameof(ProductPoco.ProductKind));
                 map.Type<EnumStringType<ProductKind>>();
             });
+            Bag(o => o.ProductSales, map =>
+            {
+                map.Table("ProductSales");
+                map.Key(k => k.Column(col => col.Name("ProductId")));
+            }, map => map.OneToMany());
         }
     }
 }

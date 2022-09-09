@@ -8,12 +8,17 @@ namespace Restaurant.Infrastructure.Configurations
         public OrderConfiguration()
         {
             Table("Orders");
-            Id(p => p.Id, map => map.Column(nameof(ProductPoco.Id)));
-            Property(p => p.OrderName, map => map.Column(nameof(OrderPoco.OrderName)));
-            Property(p => p.Price, map => map.Column(nameof(OrderPoco.Price)));
-            Property(p => p.Created, map => map.Column(nameof(OrderPoco.Created)));
-            Property(p => p.Email, map => map.Column(nameof(OrderPoco.Email)));
-            Property(p => p.Note, map => map.Column(nameof(OrderPoco.Note)));
+            Id(o => o.Id, map => map.Column(nameof(ProductPoco.Id)));
+            Property(o => o.OrderName, map => map.Column(nameof(OrderPoco.OrderName)));
+            Property(o => o.Price, map => map.Column(nameof(OrderPoco.Price)));
+            Property(o => o.Created, map => map.Column(nameof(OrderPoco.Created)));
+            Property(o => o.Email, map => map.Column(nameof(OrderPoco.Email)));
+            Property(o => o.Note, map => map.Column(nameof(OrderPoco.Note)));
+            Bag(o => o.Products, map =>
+            {
+                map.Table("ProductSales");
+                map.Key(k => k.Column(col => col.Name("OrderId")));
+            }, map => map.OneToMany());
         }
     }
 }

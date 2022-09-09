@@ -6,31 +6,26 @@ using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
 using NHibernate.Mapping.ByCode;
 using NHibernate.SqlCommand;
-using Restaurant.Domain.Repositories;
-using Restaurant.Infrastructure.Repositories;
+using Restaurant.Infrastructure.IoC;
 using System.Diagnostics;
 
-namespace Restaurant.Infrastructure.IoC
+namespace Restaurant.IntegrationTests.Common
 {
-    public sealed class InfrastructureModule : Module
+    internal sealed class IntegrationTestsModule : Module
     {
         private readonly IConfiguration _configuration;
 
-        public InfrastructureModule(IConfiguration configuration)
+        public IntegrationTestsModule(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AdditionRepository>().As<IAdditonRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<ProductSaleRepository>().As<IProductSaleRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
-            AddNHbernate(builder);
+            OverrideSessionFactory(builder);
         }
 
-        public void AddNHbernate(ContainerBuilder builder)
+        private void OverrideSessionFactory(ContainerBuilder builder)
         {
             var mapper = new ModelMapper();
             mapper.AddMappings(typeof(InfrastructureModule).Assembly.ExportedTypes);
@@ -41,23 +36,13 @@ namespace Restaurant.Infrastructure.IoC
             {
                 c.Dialect<SQLiteDialect>();
                 c.ConnectionString = _configuration.GetConnectionString("database");
+                c.SchemaAction = SchemaAutoAction.Create;
                 c.LogFormattedSql = true;
                 c.LogSqlInConsole = true;
             });
             configuration.AddMapping(domainMapping);
-
             var sessionFactory = configuration.BuildSessionFactory();
-
             builder.Register(c => sessionFactory).SingleInstance();
-            builder.Register(c =>
-            {
-                var interceptor = new SqlDebugOutputInterceptor();
-                var session = sessionFactory
-                                .WithOptions()
-                                .Interceptor(interceptor)
-                                .OpenSession();
-                return session;
-            }).InstancePerLifetimeScope();
         }
     }
 
@@ -65,9 +50,7 @@ namespace Restaurant.Infrastructure.IoC
     {
         public override SqlString OnPrepareStatement(SqlString sql)
         {
-            Debug.Write("NHibernate: ");
-            Debug.WriteLine(sql);
-
+            Debug.WriteLine($"NHibernate: {sql}");
             return base.OnPrepareStatement(sql);
         }
     }
