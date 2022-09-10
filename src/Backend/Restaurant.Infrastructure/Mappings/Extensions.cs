@@ -24,7 +24,7 @@ namespace Restaurant.Infrastructure.Mappings
         public static Product AsEntity(this ProductPoco productPoco)
         {
             return new Product(productPoco.Id, productPoco.ProductName, productPoco.Price, productPoco.ProductKind,
-                productPoco.ProductSales.Select(o => o.Order?.AsEntity()));
+                productPoco.ProductSales?.Select(o => o.Order?.AsEntity()));
         }
 
         public static ProductPoco AsPoco(this Product product)
@@ -53,8 +53,8 @@ namespace Restaurant.Infrastructure.Mappings
 
         public static Order AsEntity(this OrderPoco orderPoco)
         {
-            return new Order(orderPoco.Id, orderPoco.OrderName, orderPoco.Created, orderPoco.Price,
-                Email.Of(orderPoco.Email), orderPoco.Note, orderPoco.Products.Select(p => p.AsEntity()));
+            return new Order(orderPoco.Id, orderPoco.OrderNumber, orderPoco.Created, orderPoco.Price,
+                Email.Of(orderPoco.Email), orderPoco.Note, orderPoco.Products?.Select(p => p?.AsEntity()));
         }
 
         public static OrderPoco AsPoco(this Order order)
@@ -62,12 +62,12 @@ namespace Restaurant.Infrastructure.Mappings
             return new OrderPoco
             {
                 Id = order.Id,
-                OrderName = order.OrderNumber,
+                OrderNumber = order.OrderNumber,
                 Created = order.Created,
                 Email = order.Email.Value,
                 Note = order.Note,
                 Price = order.Price,
-                Products = order.Products.Select(p => p.AsPoco())
+                Products = order.Products?.Select(p => p?.AsPoco())
             };
         }
 

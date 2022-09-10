@@ -9,7 +9,7 @@ namespace Restaurant.Infrastructure.Configurations
         {
             Table("Orders");
             Id(o => o.Id, map => map.Column(nameof(ProductPoco.Id)));
-            Property(o => o.OrderName, map => map.Column(nameof(OrderPoco.OrderName)));
+            Property(o => o.OrderNumber, map => map.Column(nameof(OrderPoco.OrderNumber)));
             Property(o => o.Price, map => map.Column(nameof(OrderPoco.Price)));
             Property(o => o.Created, map => map.Column(nameof(OrderPoco.Created)));
             Property(o => o.Email, map => map.Column(nameof(OrderPoco.Email)));

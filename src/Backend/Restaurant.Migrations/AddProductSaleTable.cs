@@ -14,8 +14,9 @@ namespace Restaurant.Migrations
         {
             Create.Table("ProductSales")
                   .WithColumn("Id").AsGuid().PrimaryKey()
-                  .WithColumn("OrderId").AsGuid().ForeignKey("Orders", "Id")
+                  .WithColumn("OrderId").AsGuid().ForeignKey("Orders", "Id").Nullable()
                   .WithColumn("ProductId").AsGuid().ForeignKey("Products", "Id")
+                  .WithColumn("AdditionId").AsGuid().ForeignKey("Additions", "Id").Nullable()
                   .WithColumn("Email").AsString(200)
                   .WithColumn("EndPrice").AsDecimal()
                   .WithColumn("ProductSaleState").AsString(10);

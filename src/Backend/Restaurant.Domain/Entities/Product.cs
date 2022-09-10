@@ -18,7 +18,7 @@ namespace Restaurant.Domain.Entities
             Id = id;
             ChangeProductName(productName);
             ChangePrice(price);
-            _orders = orders.ToList() ?? new List<Order>();
+            _orders = orders?.ToList() ?? new List<Order>();
             ProductKind = productKind;
         }
 

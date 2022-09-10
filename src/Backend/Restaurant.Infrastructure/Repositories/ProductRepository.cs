@@ -1,39 +1,47 @@
-﻿using Restaurant.Domain.Entities;
+﻿using NHibernate;
+using NHibernate.Linq;
+using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
+using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
 {
     internal sealed class ProductRepository : IProductRepository
     {
-        private readonly List<Product> _products = new();
+        private readonly ISession _session;
+
+        public ProductRepository(ISession session)
+        {
+            _session = session;
+        }
 
         public async Task AddAsync(Product product)
         {
-            await Task.CompletedTask;
-            _products.Add(product);
+            await _session.SaveAsync(product.AsPoco());
+            await _session.FlushAsync();
         }
 
         public async Task DeleteAsync(Product product)
         {
-            await Task.CompletedTask;
-            _products.Remove(product);
+            await _session.DeleteAsync(_session.Load<ProductPoco>(product.Id.Value));
+            await _session.FlushAsync();
         }
 
         public async Task<Product> GetAsync(Guid id)
         {
-            await Task.CompletedTask;
-            return _products.SingleOrDefault(a => a.Id == id);
+            return (await _session.GetAsync<ProductPoco>(id)).AsEntity();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            await Task.CompletedTask;
-            return _products;
+            return await _session.Query<ProductPoco>()
+                .Select(o => o.AsEntity()).ToListAsync();
         }
 
-        public Task UpdateAsync(Product product)
+        public async Task UpdateAsync(Product product)
         {
-            return Task.CompletedTask;
+            await _session.MergeAsync(product.AsPoco());
+            await _session.FlushAsync();
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NHibernate;
+using System;
+using System.Data.SQLite;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -19,26 +23,39 @@ namespace Restaurant.IntegrationTests.Common
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.ConfigureServices(services =>
+            {
+                var sp = services.BuildServiceProvider();
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("database");
+                DropDatabaseIfExists(connectionString);
+            });
             builder.UseEnvironment("test");
         }
 
-        public async override ValueTask DisposeAsync()
+        private void DropDatabaseIfExists(string connectionString)
         {
-            await DeleteAllTables();
-            await base.DisposeAsync();
+            var fileName = GetDatabaseFileName(connectionString);
+            SQLiteConnection.ClearAllPools();
+            var filePath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + fileName;
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
 
-        private async Task DeleteAllTables()
+        private static string GetDatabaseFileName(string connectionString)
         {
-            var session = Services.GetRequiredService<ISession>();
-            var query = session.CreateSQLQuery("select name from sqlite_master where type is 'table'");
-            var tables = query.List<string>();
-            
-            foreach(var table in tables)
+            var connectionSplited = connectionString.Split(';').AsEnumerable();
+            var dataSource = connectionSplited.Where(s => s.Contains("Data Source=")).FirstOrDefault();
+
+            if (dataSource is null)
             {
-                var queryDelete = session.CreateSQLQuery($"drop table if exists {table}");
-                await queryDelete.ExecuteUpdateAsync();
+                throw new InvalidOperationException("Invalid string, there is no 'Data Source='");
             }
+
+            return dataSource.Split('=')[1];
         }
     }
 }

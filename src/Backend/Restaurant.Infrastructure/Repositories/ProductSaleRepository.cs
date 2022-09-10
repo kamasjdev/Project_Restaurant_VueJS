@@ -1,39 +1,47 @@
-﻿using Restaurant.Domain.Entities;
+﻿using NHibernate;
+using NHibernate.Linq;
+using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
+using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
 {
     internal sealed class ProductSaleRepository : IProductSaleRepository
     {
-        private readonly List<ProductSale> _productSales = new();
+        private readonly ISession _session;
+
+        public ProductSaleRepository(ISession session)
+        {
+            _session = session;
+        }
 
         public async Task AddAsync(ProductSale productSale)
         {
-            await Task.CompletedTask;
-            _productSales.Add(productSale);
+            await _session.SaveAsync(productSale.AsPoco());
+            await _session.FlushAsync();
         }
 
         public async Task DeleteAsync(ProductSale productSale)
         {
-            await Task.CompletedTask;
-            _productSales.Remove(productSale);
+            await _session.DeleteAsync(_session.Load<ProductSale>(productSale.Id.Value));
+            await _session.FlushAsync();
         }
 
         public async Task<ProductSale> GetAsync(Guid id)
         {
-            await Task.CompletedTask;
-            return _productSales.SingleOrDefault(a => a.Id == id);
+            return (await _session.GetAsync<ProductSalePoco>(id)).AsEntity();
         }
 
         public async Task<IEnumerable<ProductSale>> GetAllAsync()
         {
-            await Task.CompletedTask;
-            return _productSales;
+            return await _session.Query<ProductSalePoco>()
+                .Select(o => o.AsEntity()).ToListAsync();
         }
 
-        public Task UpdateAsync(ProductSale productSale)
+        public async Task UpdateAsync(ProductSale productSale)
         {
-            return Task.CompletedTask;
+            await _session.MergeAsync(productSale.AsPoco());
+            await _session.FlushAsync();
         }
     }
 }
