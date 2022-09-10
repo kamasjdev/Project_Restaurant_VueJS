@@ -7,6 +7,7 @@ using NHibernate.Dialect;
 using NHibernate.Mapping.ByCode;
 using NHibernate.SqlCommand;
 using Restaurant.Domain.Repositories;
+using Restaurant.Infrastructure.Exceptions;
 using Restaurant.Infrastructure.Repositories;
 using System.Diagnostics;
 
@@ -28,6 +29,7 @@ namespace Restaurant.Infrastructure.IoC
             builder.RegisterType<ProductSaleRepository>().As<IProductSaleRepository>().InstancePerLifetimeScope();
             builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
             AddNHbernate(builder);
+            builder.RegisterType<ErrorHandlerMiddleware>().AsSelf().SingleInstance();
         }
 
         public void AddNHbernate(ContainerBuilder builder)

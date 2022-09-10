@@ -15,14 +15,13 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 });
 builder.Services.AddControllers();
 builder.Services.AddFluentMigrator(builder.Configuration);
+builder.Services.AddEmailSettings(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.UseInfrastructure();
 
 app.Run();
 

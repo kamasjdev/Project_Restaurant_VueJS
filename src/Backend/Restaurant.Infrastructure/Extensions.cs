@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Application.Mail;
+using Restaurant.Infrastructure.Exceptions;
 using Restaurant.Infrastructure.Initializers;
 using Restaurant.Migrations;
 
@@ -9,6 +11,12 @@ namespace Restaurant.Infrastructure
 {
     public static class Extensions
     {
+        public static IServiceCollection AddEmailSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<EmailSettings>(configuration.GetRequiredSection("emailSettings"));
+            return services;
+        }
+
         public static IServiceCollection AddFluentMigrator(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddFluentMigratorCore()
@@ -23,6 +31,9 @@ namespace Restaurant.Infrastructure
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
+            app.UseAuthorization();
+            app.UseErrorHandling();
+            app.MapControllers();
             return app;
         }
     }
