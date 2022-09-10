@@ -8,7 +8,7 @@ namespace Restaurant.Domain.Entities
         public EntityId Id { get; }
         public ProductName ProductName { get; private set; }
         public Price Price { get; private set; }
-        public ProductKind ProductKind { get; set; }
+        public ProductKind ProductKind { get; private set; }
 
         public IEnumerable<Order> Orders => _orders;
         private IList<Order> _orders = new List<Order>();
@@ -30,6 +30,11 @@ namespace Restaurant.Domain.Entities
         public void ChangeProductName(ProductName productName)
         {
             ProductName = productName;
+        }
+
+        public void ChangeProductKind(ProductKind productKind)
+        {
+            ProductKind = productKind;
         }
 
         public void AddOrders(IEnumerable<Order> orders)

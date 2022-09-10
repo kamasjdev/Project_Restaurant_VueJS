@@ -2,6 +2,7 @@
 using NHibernate.Linq;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
+using Restaurant.Domain.ValueObjects;
 using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
@@ -45,7 +46,16 @@ namespace Restaurant.Infrastructure.Repositories
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
             return await _session.Query<OrderPoco>()
-                .Select(o => o.AsEntity()).ToListAsync();
+                .Select(o => new OrderPoco
+                {
+                    Id = o.Id,
+                    Email = o.Email,
+                    Created = o.Created,
+                    Note = o.Note,
+                    OrderNumber = o.OrderNumber,
+                    Price = o.Price
+                }.AsEntity())
+                .ToListAsync();
         }
 
         public async Task UpdateAsync(Order order)

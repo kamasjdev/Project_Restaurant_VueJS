@@ -29,13 +29,43 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<Product> GetAsync(Guid id)
         {
-            return (await _session.GetAsync<ProductPoco>(id)).AsEntity();
+            return (await _session.Query<ProductPoco>().Where(p => p.Id == id)
+                .Select(p => new ProductPoco
+                {
+                    Id = p.Id,
+                    Price = p.Price,
+                    ProductKind = p.ProductKind,
+                    ProductName = p.ProductName,
+                    ProductSales = p.ProductSales.Select(ps => new ProductSalePoco
+                    {
+                        Id = ps.Id,
+                        Email = ps.Email,
+                        Addition = ps.Addition != null ? ps.Addition : null,
+                        EndPrice = ps.EndPrice,
+                        ProductSaleState = ps.ProductSaleState,
+                        Order = ps.Order != null ? new OrderPoco
+                        {
+                            Id = ps.Order.Id,
+                            Created = ps.Order.Created,
+                            Email = ps.Order.Email,
+                            Note = ps.Order.Note,
+                            OrderNumber = ps.Order.OrderNumber,
+                            Price = ps.Order.Price
+                        } : null
+                    })
+                }).SingleOrDefaultAsync())?.AsEntity();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _session.Query<ProductPoco>()
-                .Select(o => o.AsEntity()).ToListAsync();
+                 .Select(p => new ProductPoco
+                 {
+                     Id = p.Id,
+                     Price = p.Price,
+                     ProductKind = p.ProductKind,
+                     ProductName = p.ProductName
+                 }.AsEntity()).ToListAsync();
         }
 
         public async Task UpdateAsync(Product product)
