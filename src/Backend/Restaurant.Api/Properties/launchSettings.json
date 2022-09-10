@@ -12,8 +12,6 @@
     "Restaurant.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
       "applicationUrl": "http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "development"
@@ -21,8 +19,6 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "development"
       }
