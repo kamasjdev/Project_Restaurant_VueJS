@@ -22,6 +22,15 @@ namespace Restaurant.Domain.Entities
             ProductKind = productKind;
         }
 
+        public Product(EntityId id, ProductName productName, Price price, string productKind, IEnumerable<Order> orders = null)
+        {
+            Id = id;
+            ChangeProductName(productName);
+            ChangePrice(price);
+            _orders = orders?.ToList() ?? new List<Order>();
+            ProductKind = ParseToProductKind(productKind);
+        }
+
         public void ChangePrice(Price price)
         {
             Price = price;
@@ -35,6 +44,11 @@ namespace Restaurant.Domain.Entities
         public void ChangeProductKind(ProductKind productKind)
         {
             ProductKind = productKind;
+        }
+
+        public void ChangeProductKind(string productKind)
+        {
+            ProductKind = ParseToProductKind(productKind);
         }
 
         public void AddOrders(IEnumerable<Order> orders)
@@ -65,6 +79,23 @@ namespace Restaurant.Domain.Entities
             }
 
             _orders.Add(order);
+        }
+
+        private ProductKind ParseToProductKind(string productKind)
+        {
+            var parsed = Enum.TryParse<ProductKind>(productKind, out var productKindParsed);
+
+            if (!parsed)
+            {
+                throw new InvalidProductKindException(productKind);
+            }
+
+            if (!Enum.IsDefined(productKindParsed))
+            {
+                throw new InvalidProductKindException(productKind);
+            }
+
+            return productKindParsed;
         }
     }
 }

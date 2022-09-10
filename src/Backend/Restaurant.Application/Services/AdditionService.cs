@@ -6,7 +6,7 @@ using Restaurant.Domain.Repositories;
 
 namespace Restaurant.Application.Services
 {
-    internal class AdditionService : IAdditionService
+    internal sealed class AdditionService : IAdditionService
     {
         private readonly IAdditonRepository _additonRepository;
 

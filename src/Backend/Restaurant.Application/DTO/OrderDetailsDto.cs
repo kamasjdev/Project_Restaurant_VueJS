@@ -2,6 +2,6 @@
 {
     public class OrderDetailsDto : OrderDto
     {
-        public IList<ProductSaleDto> Products { get; set; } = new List<ProductSaleDto>();
+        public IEnumerable<ProductSaleDto> Products { get; set; } = new List<ProductSaleDto>();
     }
 }

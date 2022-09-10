@@ -16,7 +16,7 @@ namespace Restaurant.Domain.Entities
         public ProductSaleState ProductSaleState { get; private set; } = ProductSaleState.New;
         public Email Email { get; private set; }
 
-        public ProductSale(EntityId id, Product product, ProductSaleState productSaleState, Email email, Addition addition = null, EntityId orderId = null, Order order = null)
+        public ProductSale(EntityId id, Product product, ProductSaleState productSaleState, Email email, Addition addition = null, Order order = null)
         {
             Id = id;
             ChangeProduct(product);
@@ -26,7 +26,7 @@ namespace Restaurant.Domain.Entities
                 ChangeAddition(addition);
             }
 
-            OrderId = orderId;
+            OrderId = order?.Id;
             Order = order;
             ProductSaleState = productSaleState;
             Email = email;

@@ -6,9 +6,9 @@ namespace Restaurant.Application.Abstractions
     {
         Task<OrderDetailsDto> GetAsync(Guid id);
         Task<IEnumerable<OrderDto>> GetAllAsync();
-        Task<Guid> AddAsync(AddOrderDto addOrderDto);
+        Task AddAsync(AddOrderDto addOrderDto);
         Task UpdateAsync(AddOrderDto addOrderDto);
         Task DeleteAsync(Guid id);
-        Task DeleteWithPositionsAsync(IEnumerable<Guid> ids);
+        Task DeleteWithPositionsAsync(Guid id);
     }
 }

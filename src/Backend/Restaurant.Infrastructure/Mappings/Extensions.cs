@@ -74,8 +74,7 @@ namespace Restaurant.Infrastructure.Mappings
         public static ProductSale AsEntity(this ProductSalePoco productSalePoco)
         {
             return new ProductSale(productSalePoco.Id, productSalePoco.Product.AsEntity(), productSalePoco.ProductSaleState,
-                Email.Of(productSalePoco.Email), productSalePoco.Addition?.AsEntity(), productSalePoco.Order?.Id,
-                productSalePoco.Order?.AsEntity());
+                Email.Of(productSalePoco.Email), productSalePoco.Addition?.AsEntity(), productSalePoco.Order?.AsEntity());
         }
 
         public static ProductSalePoco AsPoco(this ProductSale productSale)

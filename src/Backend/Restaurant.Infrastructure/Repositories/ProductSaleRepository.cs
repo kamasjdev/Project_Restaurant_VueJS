@@ -63,5 +63,22 @@ namespace Restaurant.Infrastructure.Repositories
             await _session.MergeAsync(productSale.AsPoco());
             await _session.FlushAsync();
         }
+
+        public async Task<IEnumerable<ProductSale>> GetAllByOrderIdAsync(Guid orderId)
+        {
+            return await _session.Query<ProductSalePoco>()
+                .Where(p => p.Order.Id == orderId)
+                .Select(p => new ProductSalePoco
+                {
+                    Id = p.Id,
+                    EndPrice = p.EndPrice,
+                    ProductSaleState = p.ProductSaleState,
+                    Email = p.Email,
+                    Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
+                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
+                    Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
+                }.AsEntity())
+                .ToListAsync();
+        }
     }
 }

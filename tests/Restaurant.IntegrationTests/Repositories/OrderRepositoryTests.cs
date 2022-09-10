@@ -42,7 +42,7 @@ namespace Restaurant.IntegrationTests.Repositories
             var product = new Product(Guid.NewGuid(), "Product#1abc", 100, ProductKind.MainDish);
             await _productRepository.AddAsync(product);
             var order = await AddDefaultOrderAsync();
-            order.Note += " notes again";
+            order.ChangeNote(order.Note + " notes again");
             var productSale2 = new ProductSale(Guid.NewGuid(), product, ProductSaleState.New, Email.Of("email@email.com"));
             await _productSaleRepository.AddAsync(productSale2);
             order.AddProduct(productSale2);

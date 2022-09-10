@@ -10,7 +10,7 @@ namespace Restaurant.Domain.Entities
         public DateTime Created { get; }
         public Price Price { get; private set; }
         public Email Email { get; private set; }
-        public string Note { get; set; } = null;
+        public string Note { get; private set; } = null;
 
         public IEnumerable<ProductSale> Products => _products;
         private IList<ProductSale> _products = new List<ProductSale>();
@@ -44,6 +44,11 @@ namespace Restaurant.Domain.Entities
         public void ChangeEmail(Email email)
         {
             Email = email;
+        }
+
+        public void ChangeNote(string note)
+        {
+            Note = note;
         }
 
         public void AddProducts(IEnumerable<ProductSale> products)
