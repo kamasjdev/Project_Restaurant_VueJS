@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7DFF740C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.UnitTests", "..\..\tests\Restaurant.UnitTests\Restaurant.UnitTests.csproj", "{C5E8FF48-6E16-4377-8422-218FF8F4FB41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.IntegrationTests", "Restaurant.IntegrationTests\Restaurant.IntegrationTests.csproj", "{A1F2B2B5-AE19-4868-8171-22133333F1AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.IntegrationTests", "..\..\tests\Restaurant.IntegrationTests\Restaurant.IntegrationTests.csproj", "{A1F2B2B5-AE19-4868-8171-22133333F1AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
