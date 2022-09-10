@@ -7,6 +7,6 @@ namespace Restaurant.Infrastructure.Mappings
         public virtual Guid Id { get; set; }
         public virtual string AdditionName { get; set; }
         public virtual decimal Price { get; set; }
-        public virtual ProductKind ProductKind { get; set; }
+        public virtual AdditionKind AdditionKind { get; set; }
     }
 }

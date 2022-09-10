@@ -2,7 +2,7 @@
 {
     public sealed class EmailMessage
     {
-        private readonly string _subject;
+        /*private readonly string _subject;
         private readonly string _body;
 
         public string Subject => _subject;
@@ -22,6 +22,6 @@
 
             _subject = subject;
             _body = body;
-        }
+        }*/
     }
 }

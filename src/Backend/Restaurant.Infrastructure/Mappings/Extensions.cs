@@ -7,7 +7,7 @@ namespace Restaurant.Infrastructure.Mappings
     {
         public static Addition AsEntity(this AdditionPoco additionPoco)
         {
-            return new Addition(additionPoco.Id, additionPoco.AdditionName, additionPoco.Price, additionPoco.ProductKind);
+            return new Addition(additionPoco.Id, additionPoco.AdditionName, additionPoco.Price, additionPoco.AdditionKind);
         }
 
         public static AdditionPoco AsPoco(this Addition addition)
@@ -17,7 +17,7 @@ namespace Restaurant.Infrastructure.Mappings
                 Id = addition.Id,
                 AdditionName = addition.AdditionName,
                 Price = addition.Price,
-                ProductKind = addition.ProductKind
+                AdditionKind = addition.AdditionKind
             };
         }
 

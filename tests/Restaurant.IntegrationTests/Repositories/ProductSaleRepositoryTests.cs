@@ -89,7 +89,7 @@ namespace Restaurant.IntegrationTests.Repositories
 
         private async Task<Addition> AddDefaultAdditionAsync()
         {
-            var addition = new Addition(Guid.NewGuid(), $"Addition{Guid.NewGuid()}", 20, ProductKind.Drink);
+            var addition = new Addition(Guid.NewGuid(), $"Addition{Guid.NewGuid()}", 20, AdditionKind.Salad);
             await _additionRepository.AddAsync(addition);
             return addition;
         }

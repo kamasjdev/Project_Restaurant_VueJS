@@ -16,7 +16,7 @@ namespace Restaurant.Migrations
                .WithColumn("Id").AsGuid().PrimaryKey()
                .WithColumn("AdditionName").AsString(200)
                .WithColumn("Price").AsDecimal()
-               .WithColumn("ProductKind").AsString(10);
+               .WithColumn("AdditionKind").AsString(10);
         }
     }
 }

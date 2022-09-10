@@ -37,7 +37,7 @@ namespace Restaurant.Infrastructure.Repositories
                     ProductSaleState = p.ProductSaleState,
                     Email = p.Email,
                     Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, ProductKind = p.Addition.ProductKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
+                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
                     Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
                 }).SingleOrDefaultAsync())?.AsEntity();
         }
@@ -52,7 +52,7 @@ namespace Restaurant.Infrastructure.Repositories
                     ProductSaleState = p.ProductSaleState,
                     Email = p.Email,
                     Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, ProductKind = p.Addition.ProductKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
+                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
                     Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
                 }.AsEntity())
                 .ToListAsync();

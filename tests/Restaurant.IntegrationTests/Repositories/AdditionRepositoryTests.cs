@@ -14,7 +14,7 @@ namespace Restaurant.IntegrationTests.Repositories
         [Fact]
         public async Task should_add_addition()
         {
-            var addition = new Addition(Guid.NewGuid(), "Addition#1", 20, ProductKind.Drink);
+            var addition = new Addition(Guid.NewGuid(), "Addition#1", 20, AdditionKind.Drink);
 
             await _additionRepository.AddAsync(addition);
 
@@ -63,7 +63,7 @@ namespace Restaurant.IntegrationTests.Repositories
 
         private async Task<Addition> AddDefaultAdditionAsync()
         {
-            var addition = new Addition(Guid.NewGuid(), $"Addition{Guid.NewGuid()}", 20, ProductKind.Drink);
+            var addition = new Addition(Guid.NewGuid(), $"Addition{Guid.NewGuid()}", 20, AdditionKind.Drink);
             await _additionRepository.AddAsync(addition);
             return addition;
         }

@@ -2,6 +2,6 @@
 {
     public enum ProductKind
     {
-        Pizza, MainDish, Soup, Drink
+        Pizza, MainDish, Soup
     }
 }
