@@ -35,7 +35,8 @@ namespace Restaurant.Infrastructure.Repositories
                     Id = a.Id,
                     AdditionName = a.AdditionName,
                     Price = a.Price,
-                    AdditionKind = a.AdditionKind
+                    AdditionKind = a.AdditionKind,
+                    ProductSales = a.ProductSales.Select(p => new ProductSalePoco { Id = p.Id })
                 }).SingleOrDefaultAsync())?.AsEntity();
         }
 

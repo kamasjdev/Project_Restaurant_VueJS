@@ -13,22 +13,27 @@ namespace Restaurant.Domain.Entities
         public IEnumerable<Order> Orders => _orders;
         private IList<Order> _orders = new List<Order>();
 
-        public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null)
+        private IList<EntityId> _productSaleIds = new List<EntityId>();
+        public IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+
+        public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null, IEnumerable<EntityId> productSaleIds = null)
         {
             Id = id;
             ChangeProductName(productName);
             ChangePrice(price);
             _orders = orders?.ToList() ?? new List<Order>();
             ProductKind = productKind;
+            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
-        public Product(EntityId id, ProductName productName, Price price, string productKind, IEnumerable<Order> orders = null)
+        public Product(EntityId id, ProductName productName, Price price, string productKind, IEnumerable<Order> orders = null, IEnumerable<EntityId> productSaleIds = null)
         {
             Id = id;
             ChangeProductName(productName);
             ChangePrice(price);
             _orders = orders?.ToList() ?? new List<Order>();
             ProductKind = ParseToProductKind(productKind);
+            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
         public void ChangePrice(Price price)

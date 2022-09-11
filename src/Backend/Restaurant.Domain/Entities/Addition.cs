@@ -10,15 +10,19 @@ namespace Restaurant.Domain.Entities
         public Price Price { get; private set; }
         public AdditionKind AdditionKind { get; }
 
-        public Addition(EntityId id, AdditionName additionName, Price price, AdditionKind additionKind)
+        private IList<EntityId> _productSaleIds = new List<EntityId>();
+        public IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+
+        public Addition(EntityId id, AdditionName additionName, Price price, AdditionKind additionKind, IEnumerable<EntityId> productSaleIds = null)
         {
             Id = id;
             ChangeAdditionName(additionName);
             ChangePrice(price);
             AdditionKind = additionKind;
+            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
-        public Addition(EntityId id, AdditionName additionName, Price price, string additionKind)
+        public Addition(EntityId id, AdditionName additionName, Price price, string additionKind, IEnumerable<EntityId> productSaleIds = null)
         {
             Id = id;
             ChangeAdditionName(additionName);
@@ -36,6 +40,7 @@ namespace Restaurant.Domain.Entities
             }
 
             AdditionKind = additionKindParsed;
+            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
         public void ChangeAdditionName(AdditionName additionName)

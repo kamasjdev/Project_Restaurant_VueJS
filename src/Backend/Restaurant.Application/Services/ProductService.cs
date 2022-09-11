@@ -31,6 +31,13 @@ namespace Restaurant.Application.Services
             {
                 throw new ProductNotFoundException(id);
             }
+
+            if (product.ProductSaleIds.Any())
+            {
+                throw new CannotDeleteProductOrderedException(id);
+            }
+
+            await _productRepository.DeleteAsync(product);
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()

@@ -39,7 +39,7 @@ namespace Restaurant.Infrastructure.Exceptions
            => exception switch
            {
                DomainException ex => (new Error(GetErrorCode(ex), ex.Message), HttpStatusCode.BadRequest),
-               ApplicationException ex => (new Error(GetErrorCode(ex), ex.Message), HttpStatusCode.BadRequest),
+               Application.Exceptions.ApplicationException ex => (new Error(GetErrorCode(ex), ex.Message), HttpStatusCode.BadRequest),
                _ => (new Error("error", "There was an error."), HttpStatusCode.InternalServerError)
            };
 

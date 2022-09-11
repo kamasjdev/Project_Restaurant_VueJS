@@ -1,7 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Restaurant.Api;
 using Restaurant.Application.IoC;
 using Restaurant.Infrastructure;
+using Restaurant.Infrastructure.Conventions;
 using Restaurant.Infrastructure.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +15,13 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     autofacBuilder.RegisterModule(new ApplicationModule());
     autofacBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.UseDashedConventionInRouting();
+});
 builder.Services.AddFluentMigrator(builder.Configuration);
 builder.Services.AddEmailSettings(builder.Configuration);
+builder.Services.Configure<AppOptions>(builder.Configuration.GetRequiredSection("app"));
 
 var app = builder.Build();
 

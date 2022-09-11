@@ -2,7 +2,6 @@
 using NHibernate.Linq;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
-using Restaurant.Domain.ValueObjects;
 using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
@@ -18,7 +17,8 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task AddAsync(Order order)
         {
-            await _session.SaveAsync(order.AsPoco());
+            var orderPoco = order.AsPoco();
+            await _session.SaveAsync(orderPoco);
             await _session.FlushAsync();
         }
 
@@ -30,7 +30,7 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<Order> GetAsync(Guid id)
         {
-            return (await _session.Query<OrderPoco>().Where(o => o.Id == id)
+            var order = await _session.Query<OrderPoco>().Where(o => o.Id == id)
                 .Select(o => new OrderPoco
                 {
                     Id = o.Id,
@@ -39,8 +39,29 @@ namespace Restaurant.Infrastructure.Repositories
                     Note = o.Note,
                     OrderNumber = o.OrderNumber,
                     Price = o.Price,
-                    Products = o.Products.ToList()
-                }).SingleOrDefaultAsync())?.AsEntity();
+                    Products = o.Products.Select(ps => new ProductSalePoco
+                    {
+                        Id = ps.Id,
+                        Addition = new AdditionPoco
+                        {
+                            Id = ps.Addition.Id,
+                            Price = ps.Addition.Price,
+                            AdditionKind = ps.Addition.AdditionKind,
+                            AdditionName = ps.Addition.AdditionName
+                        },
+                        Email = ps.Email,
+                        EndPrice = ps.EndPrice,
+                        Product = new ProductPoco
+                        {
+                            Id = ps.Product.Id,
+                            Price = ps.Product.Price,
+                            ProductKind = ps.Product.ProductKind,
+                            ProductName = ps.Product.ProductName
+                        },
+                        ProductSaleState = ps.ProductSaleState
+                    })
+                }).SingleOrDefaultAsync();
+            return order?.AsEntity();
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()

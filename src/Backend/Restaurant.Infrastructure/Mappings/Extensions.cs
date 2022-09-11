@@ -7,7 +7,7 @@ namespace Restaurant.Infrastructure.Mappings
     {
         public static Addition AsEntity(this AdditionPoco additionPoco)
         {
-            return new Addition(additionPoco.Id, additionPoco.AdditionName, additionPoco.Price, additionPoco.AdditionKind);
+            return new Addition(additionPoco.Id, additionPoco.AdditionName, additionPoco.Price, additionPoco.AdditionKind, additionPoco.ProductSales?.Select(p => new EntityId(p.Id)).ToList());
         }
 
         public static AdditionPoco AsPoco(this Addition addition)
@@ -24,7 +24,8 @@ namespace Restaurant.Infrastructure.Mappings
         public static Product AsEntity(this ProductPoco productPoco)
         {
             return new Product(productPoco.Id, productPoco.ProductName, productPoco.Price, productPoco.ProductKind,
-                productPoco.ProductSales?.Select(o => o.Order?.AsEntity()));
+                productPoco.ProductSales?.Select(o => o.Order?.AsEntity()),
+                productPoco.ProductSales?.Select(p => new EntityId(p.Id)));
         }
 
         public static ProductPoco AsPoco(this Product product)
@@ -45,6 +46,11 @@ namespace Restaurant.Infrastructure.Mappings
 
             foreach (var order in orders)
             {
+                if (order is null)
+                {
+                    continue;
+                }
+
                 list.AddRange(order.Products.Select(p => p.AsPoco()));
             }
 

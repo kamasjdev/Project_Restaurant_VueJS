@@ -52,7 +52,7 @@ namespace Restaurant.Infrastructure.Repositories
                             OrderNumber = ps.Order.OrderNumber,
                             Price = ps.Order.Price
                         } : null
-                    })
+                    }),
                 }).SingleOrDefaultAsync())?.AsEntity();
         }
 

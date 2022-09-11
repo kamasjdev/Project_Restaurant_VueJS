@@ -8,5 +8,6 @@ namespace Restaurant.Infrastructure.Mappings
         public virtual string AdditionName { get; set; }
         public virtual decimal Price { get; set; }
         public virtual AdditionKind AdditionKind { get; set; }
+        public virtual IEnumerable<ProductSalePoco> ProductSales { get; set; }
     }
 }

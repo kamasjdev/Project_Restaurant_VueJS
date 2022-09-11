@@ -37,9 +37,14 @@ namespace Restaurant.Application.Services
             }
 
             var order = new Order(Guid.NewGuid(), Guid.NewGuid().ToString(), _clock.CurrentDate(), 
-                productSales.Sum(p => p.EndPrice), Email.Of(addOrderDto.Email), addOrderDto.Note);
-
+                productSales.Sum(p => p.EndPrice), Email.Of(addOrderDto.Email), addOrderDto.Note, productSales);
+            addOrderDto.Id = order.Id;
             await _orderRepository.AddAsync(order);
+
+            foreach (var product in productSales)
+            {
+                await _productSaleRepository.UpdateAsync(product);
+            }
         }
 
         public async Task DeleteAsync(Guid id)
@@ -51,7 +56,17 @@ namespace Restaurant.Application.Services
                 throw new OrderNotFoundException(id);
             }
 
+            foreach(var product in order.Products)
+            {
+                product.RemoveOrder();
+            }
+
             await _orderRepository.DeleteAsync(order);
+
+            foreach (var product in order.Products)
+            {
+                await _productSaleRepository.UpdateAsync(product);
+            }
         }
 
         public async Task DeleteWithPositionsAsync(Guid id)
@@ -76,9 +91,10 @@ namespace Restaurant.Application.Services
             return (await _orderRepository.GetAllAsync()).Select(o => o.AsDto());
         }
 
-        public Task<OrderDetailsDto> GetAsync(Guid id)
+        public async Task<OrderDetailsDto> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var order = await _orderRepository.GetAsync(id);
+            return order?.AsDetailsDto();
         }
 
         public async Task UpdateAsync(AddOrderDto addOrderDto)

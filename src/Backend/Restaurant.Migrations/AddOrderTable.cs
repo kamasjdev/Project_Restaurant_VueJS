@@ -18,7 +18,7 @@ namespace Restaurant.Migrations
                 .WithColumn("Price").AsDecimal()
                 .WithColumn("Created").AsDateTime()
                 .WithColumn("Email").AsString(200)
-                .WithColumn("Note").AsString(5000);
+                .WithColumn("Note").AsString(5000).NotNullable();
         }
     }
 }

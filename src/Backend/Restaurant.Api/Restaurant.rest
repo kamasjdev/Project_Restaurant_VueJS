@@ -1,0 +1,131 @@
+@url = http://localhost:5029/api
+@additionId = f9df919e-d614-417b-840e-a6308672e05e
+@productId = e8caf943-608b-4f39-84f0-9fbcd038874b
+@productSaleId = 7f359bea-1dbd-4ec2-a955-d34ac3d029db
+@email = test@test.com
+@orderId = 03608c75-16f1-4d28-9235-ff4bcdc0d35e
+
+### 
+GET {{url}}
+
+###
+GET {{url}}/additions
+
+###
+GET {{url}}/additions/{{additionId}}
+
+###
+POST {{url}}/additions
+Content-Type: application/json
+
+{
+    "additionName": "Salad with 3 ingredients",
+    "price": 15.25,
+    "additionKind": "Salad"
+}
+
+###
+PUT {{url}}/additions/{{additionId}}
+Content-Type: application/json
+
+{
+    "additionName": "Salad with 5 ingredients",
+    "price": 35.25,
+    "additionKind": "Salad"
+}
+
+###
+DELETE {{url}}/additions/{{additionId}}
+
+###
+GET {{url}}/products
+
+###
+GET {{url}}/products/{{productId}}
+
+###
+POST {{url}}/products
+Content-Type: application/json
+
+{
+    "productName": "Pizza Capriciosa 60cm",
+    "price": 50.85,
+    "productKind": "MainDish"
+}
+
+###
+PUT {{url}}/products/{{productId}}
+Content-Type: application/json
+
+{
+    "productName": "Pizza Capriciosa 50cm",
+    "price": 45.85,
+    "productKind": "Pizza"
+}
+
+###
+DELETE {{url}}/products/{{productId}}
+
+###
+GET {{url}}/product-sales/{{productSaleId}}
+
+###
+POST {{url}}/product-sales
+Content-Type: application/json
+
+{
+    "productId": "{{productId}}",
+    "email": "{{email}}"
+}
+
+###
+PUT {{url}}/product-sales/{{productSaleId}}
+Content-Type: application/json
+
+{
+    "productId": "{{productId}}",
+    "additionId": "{{additionId}}",
+    "email": "{{email}}"
+}
+
+###
+DELETE {{url}}/product-sales/{{productSaleId}}
+
+###
+GET {{url}}/product-sales/by-email/{{email}}
+
+###
+GET {{url}}/product-sales/by-order/{{orderId}}
+
+###
+GET {{url}}/orders
+
+###
+GET {{url}}/orders/{{orderId}}
+
+###
+POST {{url}}/orders
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "note": "notes",
+    "productSaleIds": [
+        "{{productSaleId}}"
+    ]
+}
+
+###
+PUT {{url}}/orders/{{orderId}}
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "note": "notes_modified",
+    "productSaleIds": [
+        "{{productSaleId}}"
+    ]
+}
+
+###
+DELETE {{url}}/orders/{{orderId}}

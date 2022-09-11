@@ -8,7 +8,7 @@ namespace Restaurant.Application.Mappings
     {
         public static Addition AsEntity(this AdditionDto additionDto)
         {
-            return new Addition(additionDto.Id, additionDto.AdditionName, additionDto.Price, additionDto.ProductKind);
+            return new Addition(additionDto.Id, additionDto.AdditionName, additionDto.Price, additionDto.AdditionKind);
         }
 
         public static AdditionDto AsDto(this Addition addition)
@@ -18,7 +18,7 @@ namespace Restaurant.Application.Mappings
                 Id = addition.Id,
                 AdditionName = addition.AdditionName,
                 Price = addition.Price,
-                ProductKind = addition.AdditionKind.ToString()
+                AdditionKind = addition.AdditionKind.ToString()
             };
         }
 

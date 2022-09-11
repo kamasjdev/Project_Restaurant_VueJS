@@ -5,6 +5,6 @@
         public Guid Id { get; set; }
         public string AdditionName { get; set; }
         public decimal Price { get; set; }
-        public string ProductKind { get; set; }
+        public string AdditionKind { get; set; }
     }
 }
