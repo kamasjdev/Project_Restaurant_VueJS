@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\src\Backend\Restaurant.Application\Restaurant.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

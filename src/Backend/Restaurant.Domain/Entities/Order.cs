@@ -93,7 +93,7 @@ namespace Restaurant.Domain.Entities
 
             if (productToDelete is null)
             {
-                throw new ProductNotFoundException(productToDelete.Id);
+                throw new ProductNotFoundException(product.Id);
             }
 
             _products.Remove(product);
