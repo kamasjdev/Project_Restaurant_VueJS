@@ -2,11 +2,11 @@
 {
     public sealed class AdditionNameTooShortException : DomainException
     {
-        public string AddtionName { get; }
+        public string AdditionName { get; }
 
         public AdditionNameTooShortException(string addtionName) : base($"AdditionName: '{addtionName}' should have at least 3 characters")
         {
-            AddtionName = addtionName;
+            AdditionName = addtionName;
         }
     }
 }
