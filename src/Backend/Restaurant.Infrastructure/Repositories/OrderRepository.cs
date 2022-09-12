@@ -42,13 +42,13 @@ namespace Restaurant.Infrastructure.Repositories
                     Products = o.Products.Select(ps => new ProductSalePoco
                     {
                         Id = ps.Id,
-                        Addition = new AdditionPoco
+                        Addition = ps.Addition != null ? new AdditionPoco
                         {
                             Id = ps.Addition.Id,
                             Price = ps.Addition.Price,
                             AdditionKind = ps.Addition.AdditionKind,
                             AdditionName = ps.Addition.AdditionName
-                        },
+                        } : null,
                         Email = ps.Email,
                         EndPrice = ps.EndPrice,
                         Product = new ProductPoco

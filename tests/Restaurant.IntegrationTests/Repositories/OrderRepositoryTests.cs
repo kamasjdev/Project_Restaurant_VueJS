@@ -37,6 +37,31 @@ namespace Restaurant.IntegrationTests.Repositories
         }
 
         [Fact]
+        public async Task should_add_order_with_product_and_addition()
+        {
+            var product = new Product(Guid.NewGuid(), "Product#1", 100, ProductKind.MainDish);
+            var addition = await AddDefaultAdditionAsync();
+            var productSale = new ProductSale(Guid.NewGuid(), product, ProductSaleState.New, Email.Of("email@email.com"), addition);
+            await _productRepository.AddAsync(product);
+            await _productSaleRepository.AddAsync(productSale);
+            var order = new Order(Guid.NewGuid(), Guid.NewGuid().ToString(), DateTime.UtcNow, 100, productSale.Email, "this is notes");
+            order.AddProduct(productSale);
+
+            await _orderRepository.AddAsync(order);
+
+            var orderAdded = await _orderRepository.GetAsync(order.Id);
+            Assert.NotNull(orderAdded);
+            Assert.Equal(order.Email, orderAdded.Email);
+            Assert.Equal(order.Price.Value, orderAdded.Price.Value);
+            Assert.Equal(order.Created, orderAdded.Created);
+            Assert.Equal(order.OrderNumber.Value, orderAdded.OrderNumber.Value);
+            Assert.Equal(order.Note, orderAdded.Note);
+            Assert.NotNull(orderAdded.Products);
+            Assert.NotEmpty(orderAdded.Products);
+            Assert.Equal(1, orderAdded.Products.Count());
+        }
+
+        [Fact]
         public async Task should_update_order()
         {
             var product = new Product(Guid.NewGuid(), "Product#1abc", 100, ProductKind.MainDish);
@@ -92,15 +117,24 @@ namespace Restaurant.IntegrationTests.Repositories
             return order;
         }
 
+        private async Task<Addition> AddDefaultAdditionAsync()
+        {
+            var addition = new Addition(Guid.NewGuid(), $"Addition{Guid.NewGuid()}", 20, AdditionKind.Drink);
+            await _additionRepository.AddAsync(addition);
+            return addition;
+        }
+
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly IProductSaleRepository _productSaleRepository;
+        private readonly IAdditonRepository _additionRepository;
 
         public OrderRepositoryTests(TestApplicationFactory<Program> factory)
         {
             _orderRepository = factory.Services.GetRequiredService<IOrderRepository>();
             _productRepository = factory.Services.GetRequiredService<IProductRepository>();
             _productSaleRepository = factory.Services.GetRequiredService<IProductSaleRepository>();
+            _additionRepository = factory.Services.GetRequiredService<IAdditonRepository>();
         }
     }
 }
