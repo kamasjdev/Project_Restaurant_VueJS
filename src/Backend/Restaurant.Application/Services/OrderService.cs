@@ -24,16 +24,19 @@ namespace Restaurant.Application.Services
         {
             var productSales = new List<ProductSale>();
 
-            foreach (var productSaleId in addOrderDto.ProductSaleIds)
+            if (addOrderDto.ProductSaleIds is not null)
             {
-                var productSale = await _productSaleRepository.GetAsync(productSaleId);
-
-                if (productSale is null)
+                foreach (var productSaleId in addOrderDto.ProductSaleIds)
                 {
-                    throw new ProductSaleNotFoundException(productSaleId);
-                }
+                    var productSale = await _productSaleRepository.GetAsync(productSaleId);
 
-                productSales.Add(productSale);
+                    if (productSale is null)
+                    {
+                        throw new ProductSaleNotFoundException(productSaleId);
+                    }
+
+                    productSales.Add(productSale);
+                }
             }
 
             var order = new Order(Guid.NewGuid(), Guid.NewGuid().ToString(), _clock.CurrentDate(), 
@@ -109,35 +112,39 @@ namespace Restaurant.Application.Services
             order.ChangeEmail(Email.Of(addOrderDto.Email));
             order.ChangeNote(addOrderDto.Note);
 
-            foreach(var productSaleId in addOrderDto.ProductSaleIds)
+            if (addOrderDto.ProductSaleIds is not null)
             {
-                var productSaleExists = order.Products.SingleOrDefault(p => p.Id == productSaleId);
-
-                if (productSaleExists is not null)
+                foreach (var productSaleId in addOrderDto.ProductSaleIds)
                 {
-                    continue;
+                    var productSaleExists = order.Products.SingleOrDefault(p => p.Id == productSaleId);
+
+                    if (productSaleExists is not null)
+                    {
+                        continue;
+                    }
+
+                    var productSale = await _productSaleRepository.GetAsync(productSaleId);
+
+                    if (productSale is null)
+                    {
+                        throw new ProductSaleNotFoundException(productSaleId);
+                    }
+
+                    order.AddProduct(productSale);
                 }
 
-                var productSale = await _productSaleRepository.GetAsync(productSaleId);
-
-                if (productSale is null)
+                var productsToDelete = new List<ProductSale>(order.Products);
+                foreach (var productSale in productsToDelete)
                 {
-                    throw new ProductSaleNotFoundException(productSaleId);
+                    var productSaleIdExists = addOrderDto.ProductSaleIds.Any(p => p == productSale.Id);
+
+                    if (productSaleIdExists)
+                    {
+                        continue;
+                    }
+
+                    order.RemoveProduct(productSale);
                 }
-
-                order.AddProduct(productSale);
-            }
-
-            foreach (var productSale in order.Products)
-            {
-                var productSaleIdExists = addOrderDto.ProductSaleIds.Any(p => p == productSale.Id);
-
-                if (productSaleIdExists)
-                {
-                    continue;
-                }
-
-                order.RemoveProduct(productSale);
             }
 
             order.ChangePrice(order.Products.Sum(o => o.EndPrice));

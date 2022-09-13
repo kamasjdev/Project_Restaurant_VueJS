@@ -123,12 +123,17 @@ namespace Restaurant.Application.Services
                 }
 
                 productSale.ChangeAddition(addition);
-            }
-            else
-            {
-                productSale.RemoveAddition();
+                await _productSaleRepository.UpdateAsync(productSale);
+                return;
             }
 
+            if (productSale.Addition is null)
+            {
+                await _productSaleRepository.UpdateAsync(productSale);
+                return;
+            }
+
+            productSale.RemoveAddition();
             await _productSaleRepository.UpdateAsync(productSale);
         }
     }

@@ -3,9 +3,8 @@ using Restaurant.Domain.ValueObjects;
 
 namespace Restaurant.Application.Abstractions
 {
-
     public interface IMailSender
     {
-        Task SendAsync(Email email, EmailMessage emailMessage);
+        Task SendAsync(Email email, IEmailMessage emailMessage);
     }
 }

@@ -26,7 +26,6 @@ namespace Restaurant.Domain.ValueObjects
             {
                 throw new PriceCannotBeNegativeException(price);
             }
-
         }
     }
 }

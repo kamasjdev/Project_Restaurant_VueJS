@@ -11,6 +11,7 @@
 
         public InvalidEmailSettingsException(string field, string detailMessage) : base($"Invalid EmailSettings for property: '{field}' with descripted messge: {detailMessage}")
         {
+            Field = field;
         }
     }
 }

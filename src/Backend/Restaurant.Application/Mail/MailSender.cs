@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Restaurant.Application.Abstractions;
 using Restaurant.Application.Exceptions;
 using Restaurant.Domain.ValueObjects;
-using System.Net;
 using System.Net.Mail;
 
 namespace Restaurant.Application.Mail
@@ -12,14 +11,16 @@ namespace Restaurant.Application.Mail
     {
         private readonly EmailSettings _settings;
         private readonly ILogger<MailSender> _logger;
+        private readonly ISmtpClient _smtpClient;
 
-        public MailSender(IOptionsMonitor<EmailSettings> settings, ILogger<MailSender> logger)
+        public MailSender(IOptionsMonitor<EmailSettings> settings, ILogger<MailSender> logger, ISmtpClient smtpClient)
         {
             _settings = settings.CurrentValue;
             _logger = logger;
+            _smtpClient = smtpClient;
         }
         
-        public async Task SendAsync(Email email, EmailMessage emailMessage)
+        public async Task SendAsync(Email email, IEmailMessage emailMessage)
         {
             if (!_settings.SendEmailAfterConfirmOrder)
             {
@@ -28,37 +29,32 @@ namespace Restaurant.Application.Mail
             }
 
             ValidateSettings();
-            var mail = new MailMessage(_settings.Email, email.Value);
-            using (var smtp = new SmtpClient(_settings.SmtpClient, _settings.SmtpPort))
+            var mailMessage = new MailMessage(_settings.Email, email.Value)
             {
-                mail.Subject = emailMessage.Subject;
-                mail.Body = emailMessage.Body;
-                smtp.Timeout = 5200;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential(_settings.Login, _settings.Password);
-                smtp.EnableSsl = true;
+                Subject = emailMessage.Subject,
+                Body = emailMessage.Body
+            };
 
-                var cancellationTokenSource = new CancellationTokenSource(smtp.Timeout);
-                cancellationTokenSource.CancelAfter(smtp.Timeout);
-                var cancellationToken = cancellationTokenSource.Token;
+            var cancellationTokenSource = new CancellationTokenSource(_settings.Timeout);
+            cancellationTokenSource.CancelAfter(_settings.Timeout);
+            var cancellationToken = cancellationTokenSource.Token;
 
-                try
-                {
-                    var source = new CancellationTokenSource();
-                    source.CancelAfter(TimeSpan.FromSeconds(5));
-                    var token = source.Token;
-                    var tcs = new TaskCompletionSource<bool>();
-                    cancellationToken.Register(s => ((TaskCompletionSource<bool>)s).SetResult(true), tcs);
-                    var task = smtp.SendMailAsync(mail);
-                    await Task.WhenAny(task, tcs.Task);
-                    token.ThrowIfCancellationRequested();
-                    await task;
-                }
-                catch(Exception exception)
-                {
-                    _logger.LogError(exception, exception.Message);
-                    throw new CannotSendEmailException();
-                }
+            try
+            {
+                var source = new CancellationTokenSource();
+                source.CancelAfter(TimeSpan.FromMilliseconds(_settings.Timeout));
+                var token = source.Token;
+                var tcs = new TaskCompletionSource<bool>();
+                cancellationToken.Register(s => ((TaskCompletionSource<bool>)s).SetResult(true), tcs);
+                var task = _smtpClient.SendMailAsync(mailMessage);
+                await Task.WhenAny(task, tcs.Task);
+                token.ThrowIfCancellationRequested();
+                await task;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+                throw new CannotSendEmailException();
             }
         }
 
