@@ -7,18 +7,18 @@
         <h5>Jeśli chcesz zamówić jedzenie, naciśnij przycisk poniżej lub przejdź na pasku Menu na zakładkę Zamów</h5>
       </div>
       <div>
-        <button class="btn btn-primary">
-          Zamów jedzienie
-        </button>
+        <RouterButtonComponent :url="'/my-order'" :buttonText="'Zamów jedzienie'" />
       </div>
     </div>
 </template>
 
 <script>
+  import RouterButtonComponent from '@/components/RouterButton/RouterButton';
 
   export default {
     name: 'HomePage',
     components: {
+      RouterButtonComponent
     }
   }
 </script>

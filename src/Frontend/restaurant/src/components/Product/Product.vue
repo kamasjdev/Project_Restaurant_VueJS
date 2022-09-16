@@ -1,20 +1,17 @@
 <template>
-    <div id="itemBorder" class="border border-secondary ms-2 mt-2">
+    <div id="itemBorder" :class="isMarked() ? 'border border-secondary ms-2 mt-2 bg-success' : 'border border-secondary ms-2 mt-2'">
         <div class="mt-2 mb-2">
                <div class="row">
                     <div>
-                        <div class="float-start">
-                            <div id="product-name" class="col">
+                        <div>
+                            <div id="product-name" class="text-start">
                                 <h4>{{ product.productName }}</h4>
                             </div>
                         </div>
-                        <div class="row float-end">
+                        <div class="row text-end">
                             <div>
                                 <p>Koszt:</p>
                                 <h4>{{ product.price }} PLN</h4>
-                            </div>
-                            <div>
-                                <button class="btn btn-primary">Dodaj</button>
                             </div>
                         </div>
                     </div>
@@ -26,7 +23,18 @@
 <script>
     export default {
         name: 'ProductComponent',
-        props: ['product']
+        props: ['product', 'markedId'],
+        methods: {
+            isMarked() {
+                let marked = false;
+
+                if (this.markedId === this.product.id) {
+                    marked = true;
+                }
+
+                return marked;
+            }
+        }
     }
 </script>
 
