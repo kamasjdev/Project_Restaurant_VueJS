@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
-//import router from './router'
+import router from './router'
 
 createApp(App)
-            //.use(router) //uncoment allows routing
+            .use(router) //uncoment allows routing
             .mount('#app')

@@ -1,0 +1,48 @@
+{
+    "products": [
+        {
+            "id": "e8caf943-608b-4f39-84f0-9fbcd038874b",
+            "productName": "Pizza Capriciosa 60cm",
+            "price": 50.85,
+            "productKind": "Pizza"
+        },
+        {
+            "id": "8a961716-d7f2-4d12-8882-99a2eaf323d8",
+            "productName": "Kebab w bułce",
+            "price": 20.25,
+            "productKind": "Kebab"
+        },
+        {
+            "id": "8a002176-4768-4f4d-89be-0118b52c1a5c",
+            "productName": "Zupa barszcz",
+            "price": 8.99,
+            "productKind": "Soup"
+        },
+        {
+            "id": "a9df919e-d614-417b-840e-a6308672e05e",
+            "productName": "Filet z kurczaka z ziemniakami",
+            "price": 15.30,
+            "productKind": "MainDish"
+        }
+    ],
+    "additions": [
+        {
+            "id": "8d961716-d7f2-4d12-8882-99a2eaf323d8",
+            "additionName": "Sałatka",
+            "price": 5,
+            "additionKind": "Salad"
+        },
+        {
+            "id": "8d002176-4768-4f4d-89be-0118b52c1a5c",
+            "additionName": "Sałatka z 3 składnikami",
+            "price": 7.55,
+            "additionKind": "Salad"
+        },
+        {
+            "id": "f9df919e-d614-417b-840e-a6308672e05e",
+            "additionName": "Surówka z czerownymi buraczkami",
+            "price": 5.5,
+            "additionKind": "Salad"
+        }
+    ]
+}

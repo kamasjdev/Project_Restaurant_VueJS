@@ -1,5 +1,5 @@
 <template>
-    <div className="text-center m-3 text-primary">
+    <div id="footerText" class="text-center m-3 text-primary">
         &copy; Kamil Wojtasiński {{year}}
     </div>
 </template>
@@ -17,4 +17,7 @@
 </script>
 
 <style>
+    #footerText {
+        font-size: 0.8rem;
+    }
 </style>

@@ -1,9 +1,8 @@
 <template>
   <HeaderComponent></HeaderComponent>
   <MenuComponent></MenuComponent>
+  <router-view />
   <FooterComponent></FooterComponent>
-  <!-- uncomment allows to view pages from routing -->
-  <!-- <router-view /> --> 
 </template>
 
 <script>
