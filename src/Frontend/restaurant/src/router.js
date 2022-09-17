@@ -4,6 +4,7 @@ import SettingsPage from './pages/Settings'
 import MyOrderPage from './pages/MyOrder'
 import NotFoundPage from './pages/NotFound'
 import OrderSummaryPage from './pages/OrderSummary'
+import AddProductPage from './pages/Products/AddProductPage'
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: '/order-summary',
         name: 'order-summary',
         component: OrderSummaryPage
+    },
+    {
+        path: '/products/add',
+        name: 'add-product',
+        component: AddProductPage
     },
     // and finally the default route, when none of the above matches:
     { 
