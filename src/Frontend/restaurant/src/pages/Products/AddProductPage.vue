@@ -1,6 +1,6 @@
 <template>
     <h3 class="mb-2 mt-2">Dodaj produkt</h3>
-    <ProductFormComponent />
+    <ProductFormComponent :productKinds="productKinds" @submitForm="onSubmitForm" />
 </template>
 
 <script>
@@ -11,7 +11,16 @@
         components: {
             ProductFormComponent
         },
+        data() {
+            return {
+                productKinds: [{label: 1, value: 1}, {label: 2, value: 2}]
+            }
+        },
         methods: {
+            onSubmitForm(form) {
+                console.log("From AddProductPage, ", form);
+                // send to API
+            }
         }
     }
 </script>

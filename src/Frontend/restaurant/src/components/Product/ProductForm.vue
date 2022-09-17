@@ -1,23 +1,27 @@
 <template>
     <div id="product-form-position">
         <form id="product-form" @submit.prevent="submit">
-            <div class="form-group">
-                <label for="produt-name">Nazwa produktu</label>
-                <input v-model="newProduct.productName" name="product-name" type="text" class="form-control"/>
+            <div>
+                <Input :label="'Nazwa produktu'" :type="'text'" :value="newProduct.productName.value" 
+                        v-model="newProduct.productName.value" :showError="newProduct.productName.showError" 
+                        :error="newProduct.productName.error" 
+                        @valueChanged="onChangeInput($event, 'productName')"/>
             </div>
-            <div class="form-group">
-                <label for="product-price">Cena [PLN]</label>
-                <input v-model="newProduct.price" name="product-price" type="number" class="form-control"/>
+            <div>
+                <Input :label="'Cena [PLN]'" :type="'number'" :value="newProduct.price.value" 
+                        v-model="newProduct.price.value" :showError="newProduct.price.showError" 
+                        :error="newProduct.price.error" 
+                        @valueChanged="onChangeInput($event, 'price')" :step="0.01"/>
             </div>
-            <div class="form-group text-center">
-                <label for="product-type">Typ produktu</label>
-                <select v-model="newProduct.productKind" name="product-type" class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
+            <div>
+                <Input :label="'Typ produktu'" :type="'select'" :value="newProduct.productKind.value" 
+                        v-model="newProduct.productKind.value" :showError="newProduct.productKind.showError" 
+                        :error="newProduct.productKind.error" 
+                        :options="productKinds" 
+                        @valueChanged="onChangeInput($event, 'productKind')"/>
             </div>
             <div class="mt-2">
-                <button type="button" class="btn btn-secondary me-2">
+                <button type="button" class="btn btn-secondary me-2" @click="reset">
                     Reset
                 </button>
                 <button class="btn btn-success">
@@ -29,21 +33,103 @@
 </template>
 
 <script>
+    import Input from '../Input/Input'
+
     export default {
         name: 'ProductFormComponent',
-        props: [],
+        props: ['product', 'productKinds'],
+        components: {
+            Input
+        },
         data() {
             return {
-                newProduct: {
-                    productName: null,
-                    price: null,
-                    productKind: null
-                }
+                newProduct: this.initProduct()
             }
         },
         methods: {
+            initProduct() {
+                return {
+                    id: {
+                        value: this.product?.id ?? null,
+                        rules: []
+                    },
+                    productName: {
+                        value: this.product?.productName ?? null,
+                        showError: false,
+                        error: '',
+                        rules: [
+                            v => v !== null || 'Nazwa produktu jest wymagana',
+                            v => v.length > 0 || 'Nazwa produktu jest wymagana',
+                            v => v.length < 100 || 'Nazwa produktu nie może być większa niż 100 znaków',
+                            v => !/^\s+$/.test(v) || 'Nazwa produktu nie może zawierać puste znaki'
+                        ]
+                    },
+                    price: {
+                        value: this.product?.price ?? null,
+                        showError: false,
+                        error: '',
+                        rules: [
+                            v => v !== null || 'Cena jest wymagana',
+                            v => v.toString().length > 0 || 'Cena jest wymagana',
+                            v => v >= 0 || 'Cana nie może być ujemna'
+                        ]
+                    },
+                    productKind: {
+                        value: this.product?.productKind ?? null,
+                        showError: false,
+                        error: '',
+                        rules: [
+                            v => v !== null || 'Typ produktu jest wymagany',
+                            v => v.length > 0 || 'Typ produktu jest wymagany',
+                        ]
+                    }
+                }
+            },
             submit() {
-                alert(JSON.stringify(this.newProduct));
+                const errors = [];
+                for (const field in this.newProduct) {
+                    const error = this.validate(this.newProduct[field].value, field);
+                    if (error.length > 0) {
+                        errors.push(error);
+                    }
+                }
+
+                if (errors.length > 0) {
+                    return;
+                }
+
+                const formToSend = {};
+                for (const field in this.newProduct) {
+                    formToSend[field] = this.newProduct[field].value;
+                }
+                
+                this.$emit('submitForm', formToSend);
+            },
+            onChangeInput(value, fieldName) {
+                this.validate(value, fieldName);
+                this.newProduct[fieldName].value = value;
+            },
+            reset() {
+                this.newProduct = this.initProduct();
+            },
+            validate(value, fieldName) {
+                const rules = this.newProduct[fieldName].rules;
+                this.newProduct[fieldName].error = '';
+                this.newProduct[fieldName].showError = false;
+                
+                for (const rule of rules) {
+                    const valid = rule(value);
+
+                    if (valid !== true) {
+                        console.log(value);
+                        console.log(valid);
+                        this.newProduct[fieldName].error = valid;
+                        this.newProduct[fieldName].showError = true;
+                        return valid;
+                    }
+                }
+
+                return '';
             }
         }
     }

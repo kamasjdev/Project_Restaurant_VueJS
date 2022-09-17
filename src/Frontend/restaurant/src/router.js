@@ -5,6 +5,7 @@ import MyOrderPage from './pages/MyOrder'
 import NotFoundPage from './pages/NotFound'
 import OrderSummaryPage from './pages/OrderSummary'
 import AddProductPage from './pages/Products/AddProductPage'
+import EditProductPage from './pages/Products/EditProductPage'
 
 const routes = [
     {
@@ -31,6 +32,11 @@ const routes = [
         path: '/products/add',
         name: 'add-product',
         component: AddProductPage
+    },
+    {
+        path: '/products/edit/:productId',
+        name: 'edit-product',
+        component: EditProductPage
     },
     // and finally the default route, when none of the above matches:
     { 
