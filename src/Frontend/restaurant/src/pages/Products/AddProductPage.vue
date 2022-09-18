@@ -13,13 +13,14 @@
         },
         data() {
             return {
-                productKinds: [{label: 1, value: 1}, {label: 2, value: 2}]
+                productKinds: [{label: 'Pizza', value: 'Pizza'}, {label: 'Danie główne', value: 'MainDish'}, {label: 'Zupa', value: 'Soup'}]
             }
         },
         methods: {
             onSubmitForm(form) {
                 console.log("From AddProductPage, ", form);
                 // send to API
+                this.$router.push({ name: 'all-products' });
             }
         }
     }

@@ -6,6 +6,10 @@ import NotFoundPage from './pages/NotFound'
 import OrderSummaryPage from './pages/OrderSummary'
 import AddProductPage from './pages/Products/AddProductPage'
 import EditProductPage from './pages/Products/EditProductPage'
+import ProductsPage from './pages/Products/ProductsPage'
+import AddAdditionPage from './pages/Additions/AddAdditionPage'
+import EditAdditionPage from './pages/Additions/EditAdditionPage'
+import AdditionsPage from './pages/Additions/AdditionsPage'
 
 const routes = [
     {
@@ -37,6 +41,26 @@ const routes = [
         path: '/products/edit/:productId',
         name: 'edit-product',
         component: EditProductPage
+    },
+    {
+        path: '/products/',
+        name: 'all-products',
+        component: ProductsPage
+    },
+    {
+        path: '/additions/add',
+        name: 'add-addition',
+        component: AddAdditionPage
+    },
+    {
+        path: '/additions/edit/:additionId',
+        name: 'edit-addition',
+        component: EditAdditionPage
+    },
+    {
+        path: '/additions/',
+        name: 'all-additions',
+        component: AdditionsPage
     },
     // and finally the default route, when none of the above matches:
     { 

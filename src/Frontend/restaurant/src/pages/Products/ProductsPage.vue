@@ -1,15 +1,130 @@
 <template>
+    <div class="products-page">
+        <div v-if="loading">
+            <LoadingIconComponent />
+        </div>
+        <div v-if="loading === false">
+            <h3 class="mt-2 mb-2">Lista produktów</h3>
+            <div class="products-buttons mt-2 mb-2">
+                <RouterButtonComponent :namedRoute="{ name: 'add-product' }" :buttonText="'Dodaj produkt'"/>
+            </div>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <td>
+                            id
+                        </td>
+                        <td>
+                            Nazwa produktu
+                        </td>
+                        <td>
+                            Cena [PLN]
+                        </td>
+                        <td>
+                            Typ produktu
+                        </td>
+                        <td>
+                            Akcja
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="product in products" :key="product.id" class="text-start">
+                        <td>
+                            {{ product.id }}
+                        </td>
+                        <td>
+                            {{ product.productName }}
+                        </td>
+                        <td>
+                            {{ product.price }}
+                        </td>
+                        <td>
+                            {{ product.productKind }}
+                        </td>
+                        <td>
+                            <RouterButtonComponent :namedRoute="{ name: 'edit-product', params: { productId: product.id } }" 
+                                    :buttonText="'Edytuj'" :buttonClass="'btn btn-warning me-2'"
+                                    :buttonType="'button'" />
+                            <button class="btn btn-danger" @click="onDelete($event, product)">Usuń</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <PopupComponent :open="openModal" @popupClosed="popupClosed">
+            <div>Czy chcesz usunąć produkt {{productToDelete.productName}}?</div>
+            <div class="mt-2">
+                <button class="btn btn-danger me-2" @click="confirmDelete">Tak</button>
+                <button class="btn btn-secondary" @click="popupClosed">Nie</button>
+            </div>
+        </PopupComponent>
+    </div>
 </template>
 
 <script>
+    import * as response from '../../stub/response.json';
+    import LoadingIconComponent from '@/components/LoadingIcon/LoadingIcon';
+    import RouterButtonComponent from '@/components/RouterButton/RouterButton';
+    import PopupComponent from '@/components/Poupup/Popup';
+
     export default {
         name: 'ProductsPage',
         components: {
+            LoadingIconComponent,
+            RouterButtonComponent,
+            PopupComponent
+        },
+        data() {
+            return {
+                loading: true,
+                products: [],
+                openModal: false,
+                productToDelete: null
+            }
         },
         methods: {
+            async getProducts() {
+                return Promise.resolve(response.products);
+            },
+            onDelete(event, product) {
+                this.productToDelete = product;
+                this.openModal = true;
+            },
+            popupClosed() {
+                this.productToDelete = null;
+                this.openModal = false;
+            },
+            confirmDelete() {
+                this.products = this.products.filter(p => p.id !== this.productToDelete.id);
+                this.productToDelete = null;
+                this.openModal = false;
+            }
+        },
+        async mounted() {
+            function timeout(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            await timeout(1000);
+            this.products = (await this.getProducts()).map(p => ({
+                id: p.id,
+                productName: p.productName,
+                price: new Number(p.price).toFixed(2),
+                productKind: p.productKind
+            }));
+            this.loading = false;
         }
     }
 </script>
 
 <style>
+    .products-page {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .products-buttons {
+        float: left;
+    }
 </style>

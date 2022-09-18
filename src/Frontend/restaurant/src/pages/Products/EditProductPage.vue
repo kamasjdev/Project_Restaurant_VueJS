@@ -1,5 +1,5 @@
 <template>
-    <h3 class="mb-2 mt-2">Edytuj produkt {{$route.params.productId}}</h3>
+    <h3 class="mb-2 mt-2">Edytuj produkt {{product.productName}}</h3>
     <ProductFormComponent :product="product" :productKinds="productKinds" @submitForm="onSubmitForm" />
 </template>
 
@@ -19,13 +19,14 @@
                     price: 50.85,
                     productKind: 'Pizza'
                 },
-                productKinds: [{label: 'Pizza', value: 'Pizza'}, {label: 'Zupa', value: 'Zupa'}]
+                productKinds: [{label: 'Pizza', value: 'Pizza'}, {label: 'Danie główne', value: 'MainDish'}, {label: 'Zupa', value: 'Soup'}]
             }
         },
         methods: {
             onSubmitForm(form) {
                 console.log("From EditProductPage, ", form);
                 // send to API
+                this.$router.push({ name: 'all-products' });
             }
         }
     }

@@ -1,15 +1,130 @@
 <template>
+    <div class="additions-page">
+    <div v-if="loading">
+        <LoadingIconComponent />
+    </div>
+    <div v-if="loading === false">
+        <h3 class="mt-2 mb-2">Lista dodatków</h3>
+        <div class="additions-buttons mt-2 mb-2">
+            <RouterButtonComponent :namedRoute="{ name: 'add-addition' }" :buttonText="'Dodaj dodatek'"/>
+        </div>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <td>
+                        id
+                    </td>
+                    <td>
+                        Nazwa dodatku
+                    </td>
+                    <td>
+                        Cena [PLN]
+                    </td>
+                    <td>
+                        Typ dodatku
+                    </td>
+                    <td>
+                        Akcja
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="addition in additions" :key="addition.id" class="text-start">
+                    <td>
+                        {{ addition.id }}
+                    </td>
+                    <td>
+                        {{ addition.additionName }}
+                    </td>
+                    <td>
+                        {{ addition.price }}
+                    </td>
+                    <td>
+                        {{ addition.additionKind }}
+                    </td>
+                    <td>
+                        <RouterButtonComponent :namedRoute="{ name: 'edit-addition', params: { additionId: addition.id } }"
+                                :buttonText="'Edytuj'" :buttonClass="'btn btn-warning me-2'"
+                                :buttonType="'button'" />
+                        <button class="btn btn-danger" @click="onDelete($event, addition)">Usuń</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <PopupComponent :open="openModal" @popupClosed="popupClosed">
+        <div>Czy chcesz usunąć dodatek {{additionToDelete.additionName}}?</div>
+        <div class="mt-2">
+            <button class="btn btn-danger me-2" @click="confirmDelete">Tak</button>
+            <button class="btn btn-secondary" @click="popupClosed">Nie</button>
+        </div>
+    </PopupComponent>
+</div>
 </template>
 
 <script>
-    export default {
-        name: 'AdditionsPage',
-        components: {
-        },
-        methods: {
+import * as response from '../../stub/response.json';
+import LoadingIconComponent from '@/components/LoadingIcon/LoadingIcon';
+import RouterButtonComponent from '@/components/RouterButton/RouterButton';
+import PopupComponent from '@/components/Poupup/Popup';
+
+export default {
+    name: 'AdditionsPage',
+    components: {
+        LoadingIconComponent,
+        RouterButtonComponent,
+        PopupComponent
+    },
+    data() {
+        return {
+            loading: true,
+            additions: [],
+            openModal: false,
+            additionToDelete: null
         }
+    },
+    methods: {
+        async getAdditions() {
+            return Promise.resolve(response.additions);
+        },
+        onDelete(event, addition) {
+            this.additionToDelete = addition;
+            this.openModal = true;
+        },
+        popupClosed() {
+            this.additionToDelete = null;
+            this.openModal = false;
+        },
+        confirmDelete() {
+            this.additions = this.additions.filter(p => p.id !== this.additionToDelete.id);
+            this.additionToDelete = null;
+            this.openModal = false;
+        }
+    },
+    async mounted() {
+        function timeout(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        await timeout(1000);
+        this.additions = (await this.getAdditions()).map(a =>({
+            id: a.id,
+            additionName: a.additionName,
+            price: new Number(a.price).toFixed(2),
+            additionKind: a.additionKind
+        }));
+        this.loading = false;
     }
+}
 </script>
 
 <style>
+.additions-page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.additions-buttons {
+    float: left;
+}
 </style>

@@ -2,23 +2,23 @@
     <div id="product-form-position">
         <form id="product-form" @submit.prevent="submit">
             <div>
-                <Input :label="'Nazwa produktu'" :type="'text'" :value="newProduct.productName.value" 
-                        v-model="newProduct.productName.value" :showError="newProduct.productName.showError" 
-                        :error="newProduct.productName.error" 
-                        @valueChanged="onChangeInput($event, 'productName')"/>
+                <Input :label="'Nazwa dodatku'" :type="'text'" :value="newAddition.additionName.value" 
+                        v-model="newAddition.additionName.value" :showError="newAddition.additionName.showError" 
+                        :error="newAddition.additionName.error" 
+                        @valueChanged="onChangeInput($event, 'additionName')"/>
             </div>
             <div>
-                <Input :label="'Cena [PLN]'" :type="'number'" :value="newProduct.price.value" 
-                        v-model="newProduct.price.value" :showError="newProduct.price.showError" 
-                        :error="newProduct.price.error" 
+                <Input :label="'Cena [PLN]'" :type="'number'" :value="newAddition.price.value" 
+                        v-model="newAddition.price.value" :showError="newAddition.price.showError" 
+                        :error="newAddition.price.error" 
                         @valueChanged="onChangeInput($event, 'price')" :step="0.01"/>
             </div>
             <div>
-                <Input :label="'Typ produktu'" :type="'select'" :value="newProduct.productKind.value" 
-                        v-model="newProduct.productKind.value" :showError="newProduct.productKind.showError" 
-                        :error="newProduct.productKind.error" 
-                        :options="productKinds" 
-                        @valueChanged="onChangeInput($event, 'productKind')"/>
+                <Input :label="'Typ dodatku'" :type="'select'" :value="newAddition.additionKind.value" 
+                        v-model="newAddition.additionKind.value" :showError="newAddition.additionKind.showError" 
+                        :error="newAddition.additionKind.error" 
+                        :options="additionKinds" 
+                        @valueChanged="onChangeInput($event, 'additionKind')"/>
             </div>
             <div class="mt-2">
                 <button type="button" class="btn btn-secondary me-2" @click="reset">
@@ -36,36 +36,36 @@
     import Input from '../Input/Input'
 
     export default {
-        name: 'ProductFormComponent',
-        props: ['product', 'productKinds'],
+        name: 'AdditionFormComponent',
+        props: ['addition', 'additionKinds'],
         components: {
             Input
         },
         data() {
             return {
-                newProduct: this.initProduct()
+                newAddition: this.initAddition()
             }
         },
         methods: {
-            initProduct() {
+            initAddition() {
                 return {
                     id: {
-                        value: this.product?.id ?? null,
+                        value: this.addition?.id ?? null,
                         rules: []
                     },
-                    productName: {
-                        value: this.product?.productName ?? null,
+                    additionName: {
+                        value: this.addition?.additionName ?? null,
                         showError: false,
                         error: '',
                         rules: [
-                            v => v !== null || 'Nazwa produktu jest wymagana',
-                            v => v.length > 0 || 'Nazwa produktu jest wymagana',
-                            v => v.length < 100 || 'Nazwa produktu nie może być większa niż 100 znaków',
-                            v => !/^\s+$/.test(v) || 'Nazwa produktu nie może zawierać puste znaki'
+                            v => v !== null || 'Nazwa dodatku jest wymagana',
+                            v => v.length > 0 || 'Nazwa dodatku jest wymagana',
+                            v => v.length < 100 || 'Nazwa dodatku nie może być większa niż 100 znaków',
+                            v => !/^\s+$/.test(v) || 'Nazwa dodatku nie może zawierać puste znaki'
                         ]
                     },
                     price: {
-                        value: this.product?.price ?? null,
+                        value: this.addition?.price ?? null,
                         showError: false,
                         error: '',
                         rules: [
@@ -74,21 +74,21 @@
                             v => v >= 0 || 'Cana nie może być ujemna'
                         ]
                     },
-                    productKind: {
-                        value: this.product?.productKind ?? null,
+                    additionKind: {
+                        value: this.addition?.additionKind ?? null,
                         showError: false,
                         error: '',
                         rules: [
-                            v => v !== null || 'Typ produktu jest wymagany',
-                            v => v.length > 0 || 'Typ produktu jest wymagany',
+                            v => v !== null || 'Typ dodatku jest wymagany',
+                            v => v.length > 0 || 'Typ dodatku jest wymagany',
                         ]
                     }
                 }
             },
             submit() {
                 const errors = [];
-                for (const field in this.newProduct) {
-                    const error = this.validate(this.newProduct[field].value, field);
+                for (const field in this.newAddition) {
+                    const error = this.validate(this.newAddition[field].value, field);
                     if (error.length > 0) {
                         errors.push(error);
                     }
@@ -99,30 +99,30 @@
                 }
 
                 const formToSend = {};
-                for (const field in this.newProduct) {
-                    formToSend[field] = this.newProduct[field].value;
+                for (const field in this.newAddition) {
+                    formToSend[field] = this.newAddition[field].value;
                 }
                 
                 this.$emit('submitForm', formToSend);
             },
             onChangeInput(value, fieldName) {
                 this.validate(value, fieldName);
-                this.newProduct[fieldName].value = value;
+                this.newAddition[fieldName].value = value;
             },
             reset() {
-                this.newProduct = this.initProduct();
+                this.newAddition = this.initAddition();
             },
             validate(value, fieldName) {
-                const rules = this.newProduct[fieldName].rules;
-                this.newProduct[fieldName].error = '';
-                this.newProduct[fieldName].showError = false;
+                const rules = this.newAddition[fieldName].rules;
+                this.newAddition[fieldName].error = '';
+                this.newAddition[fieldName].showError = false;
                 
                 for (const rule of rules) {
                     const valid = rule(value);
 
                     if (valid !== true) {
-                        this.newProduct[fieldName].error = valid;
-                        this.newProduct[fieldName].showError = true;
+                        this.newAddition[fieldName].error = valid;
+                        this.newAddition[fieldName].showError = true;
                         return valid;
                     }
                 }
