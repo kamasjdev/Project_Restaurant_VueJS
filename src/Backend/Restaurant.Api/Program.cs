@@ -19,8 +19,7 @@ builder.Services.AddControllers(options =>
 {
     options.UseDashedConventionInRouting();
 });
-builder.Services.AddFluentMigrator(builder.Configuration);
-builder.Services.AddEmailSettings(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.Configure<AppOptions>(builder.Configuration.GetRequiredSection("app"));
 
 var app = builder.Build();

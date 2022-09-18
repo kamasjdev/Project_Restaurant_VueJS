@@ -21,6 +21,10 @@
 </script>
     
 <style>
+  dl, ol, ul {
+    margin-bottom: 0px !important;
+  }
+
   #navContainer {
     border: 1px solid #cdcdcd;
   }

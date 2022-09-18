@@ -67,6 +67,7 @@
     import LoadingIconComponent from '@/components/LoadingIcon/LoadingIcon';
     import RouterButtonComponent from '@/components/RouterButton/RouterButton';
     import PopupComponent from '@/components/Poupup/Popup';
+    import axios from '../../axios-setup';
 
     export default {
         name: 'ProductsPage',
@@ -102,17 +103,14 @@
             }
         },
         async mounted() {
-            function timeout(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-            
-            await timeout(1000);
-            this.products = (await this.getProducts()).map(p => ({
+            const response = await axios.get('/api/products');
+            this.products = response.data.map(p => ({
                 id: p.id,
                 productName: p.productName,
                 price: new Number(p.price).toFixed(2),
                 productKind: p.productKind
             }));
+
             this.loading = false;
         }
     }

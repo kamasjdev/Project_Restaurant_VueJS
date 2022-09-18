@@ -11,13 +11,32 @@ namespace Restaurant.Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddEmailSettings(this IServiceCollection services, IConfiguration configuration)
+        private const string CorsPolicy = "cors";
+
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddCors(cors =>
+            {
+                cors.AddPolicy(CorsPolicy, policy =>
+                {
+                    policy.WithOrigins("*")
+                          .WithMethods("POST", "PUT", "PATCH", "DELETE")
+                          .WithHeaders("Content-Type", "Authorization")
+                          .WithExposedHeaders("Location");
+                });
+            });
+            services.AddEmailSettings(configuration);
+            services.AddFluentMigrator(configuration);
+            return services;
+        }
+
+        private static IServiceCollection AddEmailSettings(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EmailSettings>(configuration.GetRequiredSection("emailSettings"));
             return services;
         }
 
-        public static IServiceCollection AddFluentMigrator(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddFluentMigrator(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddFluentMigratorCore()
                 .ConfigureRunner(cr =>
@@ -31,6 +50,7 @@ namespace Restaurant.Infrastructure
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
+            app.UseCors(CorsPolicy);
             app.UseAuthorization();
             app.UseErrorHandling();
             app.MapControllers();

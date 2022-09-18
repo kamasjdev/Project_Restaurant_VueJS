@@ -14,12 +14,11 @@
 
 <script>
   import RouterButtonComponent from '@/components/RouterButton/RouterButton';
-
   export default {
     name: 'HomePage',
     components: {
       RouterButtonComponent
-    }
+    },
   }
 </script>
 
@@ -27,5 +26,6 @@
   #home-body {
     min-height: 120px;
     height: fit-content;
+    margin-top: 1rem;
   }
 </style>
