@@ -54,6 +54,7 @@
         </div>
         <PopupComponent :open="openModal" @popupClosed="popupClosed">
             <div>Czy chcesz usunąć produkt {{productToDelete.productName}}?</div>
+            <div v-if="error" className="alert alert-danger mt-2 mb-2">{{error}}</div>
             <div class="mt-2">
                 <button class="btn btn-danger me-2" @click="confirmDelete">Tak</button>
                 <button class="btn btn-secondary" @click="popupClosed">Nie</button>
@@ -68,6 +69,7 @@
     import RouterButtonComponent from '@/components/RouterButton/RouterButton';
     import PopupComponent from '@/components/Poupup/Popup';
     import axios from '../../axios-setup';
+    import exceptionMapper from '@/helpers/exceptionToMessageMapper';
 
     export default {
         name: 'ProductsPage',
@@ -81,7 +83,8 @@
                 loading: true,
                 products: [],
                 openModal: false,
-                productToDelete: null
+                productToDelete: null,
+                error: ''
             }
         },
         methods: {
@@ -96,21 +99,35 @@
                 this.productToDelete = null;
                 this.openModal = false;
             },
-            confirmDelete() {
-                this.products = this.products.filter(p => p.id !== this.productToDelete.id);
-                this.productToDelete = null;
-                this.openModal = false;
+            async confirmDelete() {
+                try {
+                    this.error = '';
+                    await axios.delete(`/api/products/${this.productToDelete.id}`);
+                    this.fetchProducts();
+                    this.additionToDelete = null;
+                    this.openModal = false;
+                } catch(exception) {
+                    const message = exceptionMapper(exception);
+                    this.error = message;
+                    console.log(exception);
+                }
+            },
+            async fetchProducts() {
+                try {
+                    const response = await axios.get('/api/products');
+                    this.products = response.data.map(p => ({
+                        id: p.id,
+                        productName: p.productName,
+                        price: new Number(p.price).toFixed(2),
+                        productKind: p.productKind
+                    }));
+                } catch(exception) {
+                    console.log(exception);
+                }
             }
         },
-        async mounted() {
-            const response = await axios.get('/api/products');
-            this.products = response.data.map(p => ({
-                id: p.id,
-                productName: p.productName,
-                price: new Number(p.price).toFixed(2),
-                productKind: p.productKind
-            }));
-
+        async created() {
+            this.fetchProducts();
             this.loading = false;
         }
     }

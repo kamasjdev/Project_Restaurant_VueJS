@@ -103,6 +103,10 @@
                     formToSend[field] = this.newAddition[field].value;
                 }
                 
+                if (formToSend.id === null) {
+                    delete formToSend.id;
+                }
+
                 this.$emit('submitForm', formToSend);
             },
             onChangeInput(value, fieldName) {
