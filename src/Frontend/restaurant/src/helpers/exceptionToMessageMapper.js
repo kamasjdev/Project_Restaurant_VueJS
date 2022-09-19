@@ -48,6 +48,12 @@ function getMessageFromCode(code) {
         case 'addition_not_found': {
             return 'Dodatek nie został znaleziony';
         }
+        case 'product_sale_not_found': {
+            return 'Nie znaleziono pozycji zamówienia';
+        }
+        case 'order_not_found': {
+            return 'Nie znaleziono zamówienia';
+        }
         default: {
             return 'Wystąpił błąd';
         }

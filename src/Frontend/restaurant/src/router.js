@@ -22,7 +22,7 @@ const routes = [
         component: MyOrderPage
     },
     {
-        path: '/order-summary',
+        path: '/order-summary/:orderId',
         name: 'order-summary',
         component: OrderSummaryPage
     },
