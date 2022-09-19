@@ -129,3 +129,12 @@ Content-Type: application/json
 
 ###
 DELETE {{url}}/orders/{{orderId}}
+
+###
+POST {{url}}/mails/send
+Content-Type: application/json
+
+{
+    "orderId": "{{orderId}}",
+    "email": "{{email}}"
+}

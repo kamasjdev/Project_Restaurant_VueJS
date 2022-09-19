@@ -114,9 +114,8 @@ namespace Restaurant.Application.Mail
             private void AddNotes(string notes)
             {
                 var note = new StringBuilder("<h5>");
-                note.Append("Notes:");
+                note.Append("Uwagi:");
                 note.Append("</h5>");
-                note.Append("<br/>");
                 note.Append("<h5>");
                 note.Append(notes);
                 note.Append("</h5>");

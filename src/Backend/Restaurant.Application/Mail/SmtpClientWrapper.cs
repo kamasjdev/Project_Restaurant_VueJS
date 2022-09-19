@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Options;
+using System.Net;
 using System.Net.Mail;
 
 namespace Restaurant.Application.Mail
@@ -8,9 +9,9 @@ namespace Restaurant.Application.Mail
         private readonly SmtpClient _smtpClient;
         private readonly EmailSettings _emailSettings;
 
-        public SmtpClientWrapper(EmailSettings emailSettings)
+        public SmtpClientWrapper(IOptionsMonitor<EmailSettings> emailSettings)
         {
-            _emailSettings = emailSettings;
+            _emailSettings = emailSettings.CurrentValue;
             _smtpClient = new SmtpClient(_emailSettings.SmtpClient, _emailSettings.SmtpPort)
             {
                 Timeout = _emailSettings.Timeout,
