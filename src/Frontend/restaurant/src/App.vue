@@ -3,6 +3,7 @@
   <MenuComponent></MenuComponent>
   <router-view />
   <FooterComponent></FooterComponent>
+  <notifications />
 </template>
 
 <script>

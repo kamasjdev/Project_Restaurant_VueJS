@@ -88,13 +88,19 @@
             <InputComponent :label="'Email'" :type="'text'" :value="email" 
                             v-model="email" :showError="emailError.length > 0" 
                             :error="emailError"
-                            @valueChanged="($event) => email"/>
+                            @valueChanged="($event) => email = $event"/>
         </div>
+        <div v-if="errorSend.length > 0" className="alert alert-danger mt-2">{{errorSend}}</div>
         <div class="mt-2">
             <button class="btn btn-danger me-2" @click="confirmSend">Tak</button>
             <button class="btn btn-secondary" @click="popupClosed">Nie</button>
         </div>
     </PopupComponent>
+    <notifications
+      group="custom-style"
+      position="top right"
+      :width="400"
+    />
 </template>
 
 <script>
@@ -103,6 +109,7 @@
   import InputComponent from '@/components/Input/Input';
   import axios from '@/axios-setup';
   import exceptionMapper from '@/helpers/exceptionToMessageMapper';
+  import { notify } from "@kyvg/vue3-notification";
 
   export default {
     name: 'OrderSummaryPage',
@@ -117,7 +124,8 @@
             order: null,
             openModal: false,
             email: '',
-            emailError: ''
+            emailError: '',
+            errorSend: ''
         }
     },
     methods: {
@@ -125,15 +133,36 @@
             this.openModal = false;
             this.email = '';
             this.emailError = '';
+            this.errorSend = '';
         },
-        confirmSend() {
+        async confirmSend() {
             this.emailError = '';
+            this.errorSend = '';
             const pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; //eslint-disable-line
             if (!pattern.test(this.email)) {
                 this.emailError = 'Niepoprawny email';
                 return;
             }
 
+            try {
+                await axios.post('/api/mails/send', {
+                    orderId: this.order.id,
+                    email: this.email
+                });
+                this.openModal = false;
+                notify({
+                    type: "success",
+                    title: 'Send email',
+                    text: `Email was sent to ${this.email}!`
+                });
+                this.email = '';
+                this.emailError = '';
+                this.errorSend = '';
+            } catch(exception) {
+                const message = exceptionMapper(exception);
+                this.errorSend = message;
+                console.log(exception);
+            }
         },
     },
     async mounted() {
