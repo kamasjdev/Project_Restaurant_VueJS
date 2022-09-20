@@ -3,7 +3,11 @@
 @productId = e8caf943-608b-4f39-84f0-9fbcd038874b
 @productSaleId = 7f359bea-1dbd-4ec2-a955-d34ac3d029db
 @email = test@test.com
+@password = PasWorD123!2
 @orderId = 03608c75-16f1-4d28-9235-ff4bcdc0d35e
+@adminEmail = admin@admin.com
+@adminPassword = PasW0Rd!26
+@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJ1bmlxdWVfbmFtZSI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwibmJmIjoxNjYzNzAzMzUyLCJleHAiOjE2NjM3MDY5NTIsImlzcyI6InJlc3RhdXJhbnQtaXNzdWVyIiwiYXVkIjoicmVzdGF1cmFudC1hdWRpZW5jZSJ9.99nJf69ZjOfnZ4TPIA49M2P-lEDl2T5e2mNyOQL-UPw
 
 ### 
 GET {{url}}
@@ -138,3 +142,39 @@ Content-Type: application/json
     "orderId": "{{orderId}}",
     "email": "{{email}}"
 }
+
+###
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{adminEmail}}",
+    "password": "{{adminPassword}}"
+}
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{jwtToken}}
+
+###
+POST {{url}}/users/sign-up
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "role": "user"
+}
+
+### @name login
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+###
+GET {{url}}/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzMxZWJlYy1iNGFhLTQzYTctYWQxYS0xZTRhNzNhZWY5ZWEiLCJ1bmlxdWVfbmFtZSI6Ijk3MzFlYmVjLWI0YWEtNDNhNy1hZDFhLTFlNGE3M2FlZjllYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6InVzZXIiLCJuYmYiOjE2NjM3MDQxNjEsImV4cCI6MTY2MzcwNzc2MSwiaXNzIjoicmVzdGF1cmFudC1pc3N1ZXIiLCJhdWQiOiJyZXN0YXVyYW50LWF1ZGllbmNlIn0.H-yN8Dx_F_hpWK4FX25wO6mukuwU2OpzyTdMc37y0_o

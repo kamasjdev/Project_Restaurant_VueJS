@@ -54,6 +54,9 @@ function getMessageFromCode(code) {
         case 'order_not_found': {
             return 'Nie znaleziono zamówienia';
         }
+        case 'invalid_credentials': {
+            return 'Niepoprawne dane logowania';
+        }
         default: {
             return 'Wystąpił błąd';
         }

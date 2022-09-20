@@ -7,6 +7,9 @@
         <li id="navItem" class="nav-item">
           <router-link to="/my-order" id="navUrl" class="nav-link">Zamów</router-link>
         </li>
+        <li id="navItem" class="nav-item">
+          <router-link to="/login" id="navUrl" class="nav-link">Logowanie</router-link>
+        </li>
     </ul>
   </nav>
 </template>

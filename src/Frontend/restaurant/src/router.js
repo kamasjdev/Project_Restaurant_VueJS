@@ -9,6 +9,7 @@ import ProductsPage from './pages/Products/ProductsPage'
 import AddAdditionPage from './pages/Additions/AddAdditionPage'
 import EditAdditionPage from './pages/Additions/EditAdditionPage'
 import AdditionsPage from './pages/Additions/AdditionsPage'
+import Login from './pages/Login'
 
 const routes = [
     {
@@ -37,7 +38,7 @@ const routes = [
         component: EditProductPage
     },
     {
-        path: '/products/',
+        path: '/products',
         name: 'all-products',
         component: ProductsPage
     },
@@ -52,9 +53,14 @@ const routes = [
         component: EditAdditionPage
     },
     {
-        path: '/additions/',
+        path: '/additions',
         name: 'all-additions',
         component: AdditionsPage
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login
     },
     // and finally the default route, when none of the above matches:
     { 
