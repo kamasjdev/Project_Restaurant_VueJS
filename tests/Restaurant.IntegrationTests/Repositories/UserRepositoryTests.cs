@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Application.Abstractions;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
 using Restaurant.Domain.ValueObjects;
@@ -15,7 +16,7 @@ namespace Restaurant.IntegrationTests.Repositories
         [Fact]
         public async Task should_add_user()
         {
-            var user = User.Create(Email.Of("admin@admin.com"), "pasW0Rd", User.Roles.AdminRole, _currentDate);
+            var user = User.Create(Email.Of("admin@admin-test.com"), "pasW0Rd", User.Roles.AdminRole, _currentDate);
 
             await _userRepository.AddAsync(user);
 
@@ -83,6 +84,19 @@ namespace Restaurant.IntegrationTests.Repositories
             Assert.True(users.Count() > 1);
         }
 
+        [Fact]
+        public async Task should_get_admin_user()
+        {
+            var email = "admin@admin.com";
+            var password = "PasW0Rd!26";
+
+            var user = await _userRepository.GetAsync(email);
+
+            Assert.NotNull(user);
+            Assert.Equal(email, user.Email.Value);
+            Assert.True(_passwordManager.Validate(password, user.Password));
+        }
+
         private async Task<User> AddDefaultUser()
         {
             var user = User.Create(Email.Of($"test@test.{Guid.NewGuid().ToString("N")}.com"), "pasW0Rd1", _currentDate);
@@ -92,10 +106,12 @@ namespace Restaurant.IntegrationTests.Repositories
 
         private readonly DateTime _currentDate = DateTime.UtcNow;
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordManager _passwordManager;
 
         public UserRepositoryTests(TestApplicationFactory<Program> factory)
         {
             _userRepository = factory.Services.GetRequiredService<IUserRepository>();
+            _passwordManager = factory.Services.GetRequiredService<IPasswordManager>();
         }
     }
 }

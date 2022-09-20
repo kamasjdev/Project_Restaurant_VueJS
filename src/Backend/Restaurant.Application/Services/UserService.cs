@@ -68,14 +68,14 @@ namespace Restaurant.Application.Services
             await _userRepository.UpdateAsync(user);
         }
 
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        {
+            return (await _userRepository.GetAllAsync()).Select(u => u.AsDto());
+        }
+
         public async Task<UserDto> GetAsync(Guid id)
         {
             return (await _userRepository.GetAsync(id)).AsDto();
-        }
-
-        public async Task<UserDto> GetAsync(string email)
-        {
-            return (await _userRepository.GetAsync(email)).AsDto();
         }
 
         public async Task<AuthDto> SignInAsync(SignInDto signInDto)

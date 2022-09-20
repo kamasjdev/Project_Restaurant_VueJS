@@ -28,7 +28,7 @@ namespace Restaurant.Infrastructure
             });
             services.AddEmailSettings(configuration);
             services.AddFluentMigrator(configuration);
-            services.Configure<AuthOptions>(configuration.GetRequiredSection("auth"));
+            services.AddAuth(configuration);
             return services;
         }
 
@@ -53,10 +53,20 @@ namespace Restaurant.Infrastructure
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
             app.UseCors(CorsPolicy);
-            app.UseAuthorization();
             app.UseErrorHandling();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
             return app;
+        }
+
+        public static T GetOptions<T>(this IConfiguration configuration, string sectionName)
+            where T : class, new()
+        {
+            var options = new T();
+            var section = configuration.GetRequiredSection(sectionName);
+            section.Bind(options);
+            return options;
         }
     }
 }
