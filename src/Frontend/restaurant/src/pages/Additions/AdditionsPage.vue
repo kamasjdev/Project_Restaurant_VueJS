@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import * as response from '../../stub/response.json';
 import LoadingIconComponent from '@/components/LoadingIcon/LoadingIcon';
 import RouterButtonComponent from '@/components/RouterButton/RouterButton';
 import PopupComponent from '@/components/Poupup/Popup';
@@ -88,9 +87,6 @@ export default {
         }
     },
     methods: {
-        async getAdditions() {
-            return Promise.resolve(response.additions);
-        },
         onDelete(event, addition) {
             this.additionToDelete = addition;
             this.openModal = true;
