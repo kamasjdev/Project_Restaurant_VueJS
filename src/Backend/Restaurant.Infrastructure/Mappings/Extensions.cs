@@ -96,5 +96,22 @@ namespace Restaurant.Infrastructure.Mappings
                 ProductSaleState = productSale.ProductSaleState
             };
         }
+
+        public static User AsEntity(this UserPoco userPoco)
+        {
+            return new User(userPoco.Id, Email.Of(userPoco.Email), userPoco.Password, userPoco.Role, userPoco.CreatedAt);
+        }
+
+        public static UserPoco AsPoco(this User user)
+        {
+            return new UserPoco
+            {
+                Id = user.Id,
+                Email = user.Email.Value,
+                Password = user.Password,
+                CreatedAt = user.CreatedAt,
+                Role = user.Role
+            };
+        }
     }
 }

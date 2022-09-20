@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Application.Mail;
 using Restaurant.Infrastructure.Exceptions;
 using Restaurant.Infrastructure.Initializers;
+using Restaurant.Infrastructure.Security;
 using Restaurant.Migrations;
 
 namespace Restaurant.Infrastructure
@@ -27,6 +28,7 @@ namespace Restaurant.Infrastructure
             });
             services.AddEmailSettings(configuration);
             services.AddFluentMigrator(configuration);
+            services.Configure<AuthOptions>(configuration.GetRequiredSection("auth"));
             return services;
         }
 

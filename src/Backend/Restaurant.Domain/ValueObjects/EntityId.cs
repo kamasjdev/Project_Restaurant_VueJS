@@ -1,6 +1,6 @@
 ﻿using Restaurant.Domain.Exceptions;
 
-namespace Restaurant.Domain.Entities
+namespace Restaurant.Domain.ValueObjects
 {
     public class EntityId : IEquatable<EntityId>
     {

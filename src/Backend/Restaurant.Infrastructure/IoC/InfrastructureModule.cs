@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
 using NHibernate.Cfg;
@@ -6,9 +7,12 @@ using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
 using NHibernate.Mapping.ByCode;
 using NHibernate.SqlCommand;
+using Restaurant.Application.Abstractions;
+using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
 using Restaurant.Infrastructure.Exceptions;
 using Restaurant.Infrastructure.Repositories;
+using Restaurant.Infrastructure.Security;
 using System.Diagnostics;
 
 namespace Restaurant.Infrastructure.IoC
@@ -30,6 +34,10 @@ namespace Restaurant.Infrastructure.IoC
             builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
             AddNHbernate(builder);
             builder.RegisterType<ErrorHandlerMiddleware>().AsSelf().SingleInstance();
+            builder.RegisterType<PasswordManager>().As<IPasswordManager>().SingleInstance();
+            builder.RegisterType<PasswordHasher<User>>().As<IPasswordHasher<User>>().SingleInstance();
+            builder.RegisterType<JwtManager>().As<IJwtManager>().SingleInstance();
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
         }
 
         public void AddNHbernate(ContainerBuilder builder)

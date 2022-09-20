@@ -1,5 +1,5 @@
-﻿using Restaurant.Domain.Entities;
-using Restaurant.Domain.Exceptions;
+﻿using Restaurant.Domain.Exceptions;
+using Restaurant.Domain.ValueObjects;
 using Shouldly;
 using System;
 using Xunit;

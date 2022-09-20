@@ -20,6 +20,8 @@ namespace Restaurant.Application.IoC
             builder.RegisterType<MailSender>().As<IMailSender>().InstancePerLifetimeScope();
             builder.RegisterType<SmtpClientWrapper>().As<ISmtpClient>().InstancePerLifetimeScope();
             builder.RegisterType<MailService>().As<IMailService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
         }
     }
 }

@@ -5,6 +5,7 @@ using Restaurant.Application.Exceptions;
 using Restaurant.Application.Services;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
+using Restaurant.Domain.ValueObjects;
 using Shouldly;
 using System;
 using System.Collections.Generic;

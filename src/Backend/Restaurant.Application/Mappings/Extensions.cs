@@ -96,5 +96,16 @@ namespace Restaurant.Application.Mappings
                 ProductSaleState = productSale.ProductSaleState.ToString()
             };
         }
+
+        public static UserDto AsDto(this User user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email.Value,
+                Role = user.Role,
+                CreatedAt = user.CreatedAt
+            };
+        }
     }
 }

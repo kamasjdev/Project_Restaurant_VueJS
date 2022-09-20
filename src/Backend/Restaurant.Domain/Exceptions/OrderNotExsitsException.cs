@@ -1,4 +1,4 @@
-﻿using Restaurant.Domain.Entities;
+﻿using Restaurant.Domain.ValueObjects;
 
 namespace Restaurant.Domain.Exceptions
 {
