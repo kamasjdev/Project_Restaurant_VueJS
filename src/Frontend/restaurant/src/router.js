@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from './pages/Home'
 import MyOrderPage from './pages/MyOrder'
 import NotFoundPage from './pages/NotFound'
+import ForbiddenPage from './pages/Forbidden'
 import OrderSummaryPage from './pages/OrderSummary'
 import AddProductPage from './pages/Products/AddProductPage'
 import EditProductPage from './pages/Products/EditProductPage'
@@ -9,7 +10,11 @@ import ProductsPage from './pages/Products/ProductsPage'
 import AddAdditionPage from './pages/Additions/AddAdditionPage'
 import EditAdditionPage from './pages/Additions/EditAdditionPage'
 import AdditionsPage from './pages/Additions/AdditionsPage'
-import Login from './pages/Login'
+import LoginPage from './pages/Login'
+import UsersPage from './pages/Users/UsersPage'
+import AddUserPage from './pages/Users/AddUserPage'
+import EditUserPage from './pages/Users/EditUserPage'
+import * as authService from '@/services/AuthService'
 
 const routes = [
     {
@@ -30,37 +35,90 @@ const routes = [
     {
         path: '/products/add',
         name: 'add-product',
-        component: AddProductPage
+        component: AddProductPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/products/edit/:productId',
         name: 'edit-product',
-        component: EditProductPage
+        component: EditProductPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/products',
         name: 'all-products',
-        component: ProductsPage
+        component: ProductsPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/additions/add',
         name: 'add-addition',
-        component: AddAdditionPage
+        component: AddAdditionPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/additions/edit/:additionId',
         name: 'edit-addition',
-        component: EditAdditionPage
+        component: EditAdditionPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/additions',
         name: 'all-additions',
-        component: AdditionsPage
+        component: AdditionsPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/login',
         name: 'login',
-        component: Login
+        component: LoginPage
+    },
+    {
+        path: '/users',
+        name: 'all-users',
+        component: UsersPage,
+        meta: {
+            auth: true,
+            role: 'admin'
+        }
+    },
+    {
+        path: '/users/add',
+        name: 'add-user',
+        component: AddUserPage,
+        meta: {
+            auth: true,
+            role: 'admin'
+        }
+    },
+    {
+        path: '/users/edit/:userId',
+        name: 'edit-user',
+        component: EditUserPage,
+        meta: {
+            auth: true,
+            role: 'admin'
+        }
+    },
+    {
+        path: '/forbidden',
+        name: 'forbidden',
+        component: ForbiddenPage,
+        meta: {
+            auth: true
+        }
     },
     // and finally the default route, when none of the above matches:
     { 
@@ -73,6 +131,19 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+});
+router.beforeEach((to, from, next) => {
+    const userLoggedIn = authService.isLogged();
+    if (to.meta.auth && !userLoggedIn) {
+      next('/login');
+    }
+
+    const user = authService.getUser();
+    if (to.meta.role && to.meta.role != user.role) {
+        next('/forbidden');
+    }
+
+    next();
 });
 
 export default router;

@@ -7,18 +7,45 @@
         <li id="navItem" class="nav-item">
           <router-link to="/my-order" id="navUrl" class="nav-link">Zamów</router-link>
         </li>
-        <li id="navItem" class="nav-item">
+        <li v-if="!isAuthenticated" id="navItem" class="nav-item">
           <router-link to="/login" id="navUrl" class="nav-link">Logowanie</router-link>
+        </li>
+        <li v-if="isAuthenticated" id="navItem" class="nav-item">
+          <router-link to="/products" id="navUrl" class="nav-link">Produkty</router-link>
+        </li>
+        <li v-if="isAuthenticated" id="navItem" class="nav-item">
+          <router-link to="/additions" id="navUrl" class="nav-link">Dodatki</router-link>
+        </li>
+        <li v-if="isAuthenticated && user.role === 'admin'" id="navItem" class="nav-item">
+          <router-link to="/users" id="navUrl" class="nav-link">Użytkownicy</router-link>
+        </li>
+        <li v-if="isAuthenticated" id="navItem" class="nav-item">
+          <router-link to="" id="navUrl" class="nav-link" @click="logout">Wyloguj</router-link>
         </li>
     </ul>
   </nav>
 </template>
 
 <script>
+  import * as authService from '@/services/AuthService';
+  import { mapGetters } from 'vuex';
 
   export default {
     name: 'MenuComponent',
     components: {
+    },
+    methods: {
+      authenticated() {
+        return authService.isLogged();
+      },
+      logout() {
+        authService.logout();
+        this.$router.push('/');
+        this.$store.dispatch('isAuthenticated', false);
+      }
+    },
+    computed: {
+      ...mapGetters(['isAuthenticated', 'user'])
     }
   }
 </script>

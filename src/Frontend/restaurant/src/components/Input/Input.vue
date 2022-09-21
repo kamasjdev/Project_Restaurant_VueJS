@@ -7,7 +7,7 @@
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
           @change="valueChanged" />
-      <div v-if="error && showError" class="invalid-feedback d-flex">
+      <div v-if="error && showError" class="invalid-feedback d-flex text-start">
           {{error}}
       </div>
   </div>
@@ -19,7 +19,7 @@
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
           @change="valueChanged"></textarea>
-      <div v-if="error && showError" className="invalid-feedback d-flex">
+      <div v-if="error && showError" className="invalid-feedback d-flex text-start">
           {{error}}
       </div>
   </div>
@@ -32,7 +32,7 @@
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'">
               <option v-for="option in options" :value=option.value :key=option.value>{{option.label}}</option>
       </select>
-      <div v-if="error && showError" class="invalid-feedback d-flex">
+      <div v-if="error && showError" class="invalid-feedback d-flex text-start">
           {{error}}
       </div>
   </div>
@@ -46,7 +46,7 @@
           :step = "step"
           @change="valueChanged"
           @keypress="isNumber($event)" />
-      <div v-if="error && showError" className="invalid-feedback d-flex">
+      <div v-if="error && showError" className="invalid-feedback d-flex text-start">
           {{error}}
       </div>
   </div>
@@ -58,7 +58,7 @@
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
           @change="valueChanged" />
-      <div v-if="error && showError" className="invalid-feedback d-flex">
+      <div v-if="error && showError" className="invalid-feedback d-flex text-start">
           {{error}}
       </div>
   </div>

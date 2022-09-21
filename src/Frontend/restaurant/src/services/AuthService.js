@@ -24,3 +24,10 @@ export function isLogged() {
 
     return true;
 }
+
+export function getUser() {
+    const tokenData = JSON.parse(window.localStorage.getItem('user-data'));
+    return {
+        role: tokenData?.role ?? null
+    };
+}

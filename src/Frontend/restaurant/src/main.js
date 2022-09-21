@@ -4,8 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import router from './router'
 import Notifications from '@kyvg/vue3-notification'
+import store from './vuex';
 
 createApp(App)
-            .use(router) //uncoment allows routing
+            .use(router)
             .use(Notifications)
+            .use(store)
             .mount('#app')
