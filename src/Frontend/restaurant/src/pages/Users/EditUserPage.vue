@@ -37,14 +37,29 @@
             async onSubmitForm(form) {
                 this.error = '';
                 try {
-                    await axios.post('/api/users/sign-up', form);
+                    await axios.put(`/api/users/${this.$route.params.userId}`, form);
+                    await this.updateUsers();
                     this.$router.push({ name: 'all-users' });
                 } catch(exception) {
                     const message = exceptionMapper(exception);
                     this.error = message;
                     console.log(exception);
                 }
-            }
+            },
+            async updateUsers() {
+                try {
+                    const response = await axios.get('/api/users');
+                    const users = response.data.map(u => ({
+                        id: u.id,
+                        email: u.email,
+                        role: u.role,
+                        createdAt: new Date(u.createdAt).toLocaleString()
+                    }));
+                    this.$store.dispatch('users', users);
+                } catch(exception) {
+                    console.log(exception);
+                }
+            },
         },
         async created() {
             try {

@@ -63,7 +63,6 @@
                         password: this.password
                     });
                     authService.login(response.data);
-                    console.log('authService.getUser()', authService.getUser());
                     this.$store.dispatch('isAuthenticated', true);
                     this.$router.push('/');
                 } catch(exception) {

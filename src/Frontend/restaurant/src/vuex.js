@@ -5,12 +5,16 @@ const store = createStore({
     state() {
         return {
             isAuthenticated: authService.isLogged(),
-            user: authService.getUser()
+            user: authService.getUser(),
+            users: [],
+            userToChangeRole: null
         }
     },
     getters: {
         isAuthenticated: (state) => { return state.isAuthenticated; },
-        user: (state) => { return state.user; }
+        user: (state) => { return state.user; },
+        users: (state) => { return state.users },
+        userToChangeRole: (state) => { return state.userToChangeRole }
     },
     actions: {
         isAuthenticated(context, isAuthenticated) {
@@ -19,6 +23,12 @@ const store = createStore({
         },
         user(context, user) {
             context.commit('user', user);
+        },
+        users(context, users) {
+            context.commit('users', users);
+        },
+        userToChangeRole(context, userToChangeRole) {
+            context.commit('userToChangeRole', userToChangeRole);
         }
     },
     mutations: {
@@ -27,6 +37,12 @@ const store = createStore({
         },
         user(state, user) {
             state.user = user;
+        },
+        users(state, users) {
+            state.users = users;
+        },
+        userToChangeRole(state, userToChangeRole) {
+            state.userToChangeRole = userToChangeRole;
         }
     }
 });

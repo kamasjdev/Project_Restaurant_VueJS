@@ -14,6 +14,7 @@ import LoginPage from './pages/Login'
 import UsersPage from './pages/Users/UsersPage'
 import AddUserPage from './pages/Users/AddUserPage'
 import EditUserPage from './pages/Users/EditUserPage'
+import ChangeUserRolePage from './pages/Users/ChangeUserRolePage'
 import * as authService from '@/services/AuthService'
 
 const routes = [
@@ -92,7 +93,12 @@ const routes = [
         meta: {
             auth: true,
             role: 'admin'
-        }
+        },
+        children: [{
+            path: ':userId',
+            name: 'user-change-role',
+            component: ChangeUserRolePage,
+        }]
     },
     {
         path: '/users/add',

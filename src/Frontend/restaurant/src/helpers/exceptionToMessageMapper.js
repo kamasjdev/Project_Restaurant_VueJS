@@ -57,6 +57,9 @@ function getMessageFromCode(code) {
         case 'invalid_credentials': {
             return 'Niepoprawne dane logowania';
         }
+        case 'user_not_found': {
+            return 'Nie znaleziono użytkownika'
+        }
         default: {
             return 'Wystąpił błąd';
         }
