@@ -64,7 +64,8 @@ namespace Restaurant.Application.Services
                 return;
             }
 
-            user.ChangePassword(changePasswordDto.NewPassword);
+            var securedPassword = _passwordManager.Secure(password);
+            user.ChangePassword(securedPassword);
             await _userRepository.UpdateAsync(user);
         }
 
@@ -116,6 +117,23 @@ namespace Restaurant.Application.Services
             await _userRepository.AddAsync(user);
         }
 
+        public async Task UpdateAsync(UpdateUserDto updateUserDto)
+        {
+            var user = await _userRepository.GetAsync(updateUserDto.UserId);
+
+            if (user is null)
+            {
+                throw new UserNotFoundException(updateUserDto.UserId);
+            }
+
+            user.ChangeEmail(Email.Of(updateUserDto.Email));
+            user.ChangeRole(updateUserDto.Role);
+            var password = new Password(updateUserDto.Password);
+            var securedPassword = _passwordManager.Secure(password);
+            user.ChangePassword(securedPassword);
+            await _userRepository.UpdateAsync(user);
+        }
+
         public async Task UpdateRoleAsync(UpdateRoleDto updateRoleDto)
         {
             var user = await _userRepository.GetAsync(updateRoleDto.UserId);
@@ -125,7 +143,7 @@ namespace Restaurant.Application.Services
                 throw new UserNotFoundException(updateRoleDto.UserId);
             }
 
-            user.ChangeRole(user.Role);
+            user.ChangeRole(updateRoleDto.Role);
             await _userRepository.UpdateAsync(user);
         }
     }

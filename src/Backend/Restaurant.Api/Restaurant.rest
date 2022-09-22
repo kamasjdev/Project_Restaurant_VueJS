@@ -8,6 +8,7 @@
 @adminEmail = admin@admin.com
 @adminPassword = PasW0Rd!26
 @jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJ1bmlxdWVfbmFtZSI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwibmJmIjoxNjYzNzAzMzUyLCJleHAiOjE2NjM3MDY5NTIsImlzcyI6InJlc3RhdXJhbnQtaXNzdWVyIiwiYXVkIjoicmVzdGF1cmFudC1hdWRpZW5jZSJ9.99nJf69ZjOfnZ4TPIA49M2P-lEDl2T5e2mNyOQL-UPw
+@userId = 9731ebec-b4aa-43a7-ad1a-1e4a73aef9ea
 
 ### 
 GET {{url}}
@@ -177,4 +178,13 @@ Content-Type: application/json
 
 ###
 GET {{url}}/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzMxZWJlYy1iNGFhLTQzYTctYWQxYS0xZTRhNzNhZWY5ZWEiLCJ1bmlxdWVfbmFtZSI6Ijk3MzFlYmVjLWI0YWEtNDNhNy1hZDFhLTFlNGE3M2FlZjllYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6InVzZXIiLCJuYmYiOjE2NjM3MDQxNjEsImV4cCI6MTY2MzcwNzc2MSwiaXNzIjoicmVzdGF1cmFudC1pc3N1ZXIiLCJhdWQiOiJyZXN0YXVyYW50LWF1ZGllbmNlIn0.H-yN8Dx_F_hpWK4FX25wO6mukuwU2OpzyTdMc37y0_o
+Authorization: Bearer {{jwtToken}}
+
+###
+PATCH {{url}}/users/change-role/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+    "newRole": "admin"
+}

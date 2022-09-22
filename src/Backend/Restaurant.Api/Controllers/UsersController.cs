@@ -83,10 +83,18 @@ namespace Restaurant.Api.Controllers
 
         [Authorize(Policy = "is-admin")]
         [HttpPatch("change-role/{userId:guid}")]
-        public async Task<ActionResult> ChangeRoleAsync(Guid userId, string newRole)
+        public async Task<ActionResult> ChangeRoleAsync(Guid userId, UpdateRoleDto updateRoleDto)
         {
-            await _userService.UpdateRoleAsync(new UpdateRoleDto(userId, newRole));
+            await _userService.UpdateRoleAsync(updateRoleDto with { UserId = userId});
             return Ok();
+        }
+
+        [Authorize(Policy = "is-admin")]
+        [HttpPut("{userId}")]
+        public async Task<ActionResult> UpdateAsync(Guid userId, UpdateUserDto updateUserDto)
+        {
+            await _userService.UpdateAsync(updateUserDto with { UserId = userId });
+            return NoContent();
         }
     }
 }

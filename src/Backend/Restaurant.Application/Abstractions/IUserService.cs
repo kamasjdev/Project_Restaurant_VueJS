@@ -11,5 +11,6 @@ namespace Restaurant.Application.Abstractions
         Task UpdateRoleAsync(UpdateRoleDto updateRoleDto);
         Task ChangeEmailAsync(ChangeEmailDto changeEmailDto);
         Task ChangePasswordAsync(ChangePasswordDto changePasswordDto);
+        Task UpdateAsync(UpdateUserDto updateUserDto);
     }
 }
