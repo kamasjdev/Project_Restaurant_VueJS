@@ -4,7 +4,8 @@ namespace Restaurant.Domain.ValueObjects
 {
     public class EntityId : IEquatable<EntityId>
     {
-        public Guid Value { get; }
+        private Guid _value;
+        public virtual Guid Value { get { return _value; } protected set { _value = value; } }
 
         protected EntityId() { }
 
@@ -15,7 +16,7 @@ namespace Restaurant.Domain.ValueObjects
                 throw new InvalidEntityIdException(value);
             }
 
-            Value = value;
+            _value = value;
         }
 
         public static EntityId Create() => new(Guid.NewGuid());

@@ -4,14 +4,15 @@ namespace Restaurant.Domain.ValueObjects
 {
     public class AdditionName : IEquatable<AdditionName>
     {
-        public string Value { get; }
+        private string _value;
+        public virtual string Value { get { return _value; } protected set { _value = value; } }
 
         protected AdditionName() { }
 
         public AdditionName(string addtionName)
         {
             ValidAdditionName(addtionName);
-            Value = addtionName;
+            _value = addtionName;
         }
 
         public static implicit operator string(AdditionName additionName)

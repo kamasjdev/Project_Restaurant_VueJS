@@ -4,14 +4,15 @@ namespace Restaurant.Domain.ValueObjects
 {
     public class Price : IEquatable<Price>
     {
-        public decimal Value { get; }
+        private decimal _value;
+        public virtual decimal Value { get { return _value; } protected set { _value = value; } }
 
         protected Price() { }
 
         public Price(decimal price)
         {
             ValidPrice(price);
-            Value = price;
+            _value = price;
         }
 
         public static implicit operator decimal(Price additionName)
