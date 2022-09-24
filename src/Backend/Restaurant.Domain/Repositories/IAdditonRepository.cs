@@ -6,6 +6,7 @@ namespace Restaurant.Domain.Repositories
     {
         Task AddAsync(Addition addition);
         Task UpdateAsync(Addition addition);
+        Task DeleteAsync(Guid id);
         Task DeleteAsync(Addition addition);
         Task<Addition> GetAsync(Guid id);
         Task<IEnumerable<Addition>> GetAllAsync();

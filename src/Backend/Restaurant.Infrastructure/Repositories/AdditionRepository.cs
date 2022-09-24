@@ -2,7 +2,6 @@
 using NHibernate.Linq;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
-using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
 {
@@ -21,6 +20,14 @@ namespace Restaurant.Infrastructure.Repositories
             await _session.FlushAsync();
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            var query = _session.CreateQuery("DELETE FROM Addition WHERE Id = :additionId"); // HQL Query Table Additions but Entity Addition
+            query.SetParameter("additionId", id);
+            await query.ExecuteUpdateAsync();
+            await _session.FlushAsync();
+        }
+
         public async Task DeleteAsync(Addition addition)
         {
             await _session.DeleteAsync(addition);
@@ -30,7 +37,9 @@ namespace Restaurant.Infrastructure.Repositories
         public async Task<Addition> GetAsync(Guid id)
         {
             return await _session.Query<Addition>()
-                .SingleOrDefaultAsync(a => a.Id == id);
+                .Where(a => a.Id == id)
+                .Select(a => new Addition(a.Id, a.AdditionName, a.Price, a.AdditionKind, null))
+                .SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Addition>> GetAllAsync()

@@ -36,7 +36,7 @@ namespace Restaurant.Application.Services
                 throw new CannotDeleteAdditionOrderedException(id);
             }
 
-            await _additonRepository.DeleteAsync(addition);
+            await _additonRepository.DeleteAsync(addition.Id);// NHibernate first load entity then delete so better is to delete by id using query
         }
 
         public async Task<IEnumerable<AdditionDto>> GetAllAsync()
