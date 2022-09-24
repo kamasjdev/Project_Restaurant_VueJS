@@ -17,7 +17,7 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task AddAsync(Addition addition)
         {
-            await _session.SaveAsync(addition.AsPoco());
+            await _session.SaveAsync(addition);
             await _session.FlushAsync();
         }
 

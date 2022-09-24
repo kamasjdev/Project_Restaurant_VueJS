@@ -5,13 +5,15 @@ namespace Restaurant.Domain.Entities
 {
     public class Addition
     {
-        public EntityId Id { get; }
-        public AdditionName AdditionName { get; private set; }
-        public Price Price { get; private set; }
-        public AdditionKind AdditionKind { get; }
+        public virtual EntityId Id { get; protected set; }
+        public virtual AdditionName AdditionName { get; protected set; }
+        public virtual Price Price { get; protected set; }
+        public virtual AdditionKind AdditionKind { get; protected set; }
 
         private IList<EntityId> _productSaleIds = new List<EntityId>();
-        public IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+        public virtual IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+
+        protected Addition() { }
 
         public Addition(EntityId id, AdditionName additionName, Price price, AdditionKind additionKind, IEnumerable<EntityId> productSaleIds = null)
         {
@@ -43,12 +45,12 @@ namespace Restaurant.Domain.Entities
             _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
-        public void ChangeAdditionName(AdditionName additionName)
+        public virtual void ChangeAdditionName(AdditionName additionName)
         {
             AdditionName = additionName;
         }
 
-        public void ChangePrice(Price price)
+        public virtual void ChangePrice(Price price)
         {
             Price = price;
         }

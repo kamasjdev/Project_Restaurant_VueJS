@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
@@ -54,9 +57,12 @@ namespace Restaurant.Infrastructure.IoC
                 c.LogFormattedSql = true;
                 c.LogSqlInConsole = true;
             });
-            configuration.AddMapping(domainMapping);
+            configuration.AddMapping(domainMapping);           
 
-            var sessionFactory = configuration.BuildSessionFactory();
+            var sessionFactory = Fluently.Configure(configuration)
+                .Database(SQLiteConfiguration.Standard.ConnectionString(_configuration.GetConnectionString("database")))
+                .Mappings(m => m.FluentMappings.AddFromAssembly(typeof(InfrastructureModule).Assembly))
+                .BuildSessionFactory();
 
             builder.Register(c => sessionFactory).SingleInstance();
             builder.Register(c =>
