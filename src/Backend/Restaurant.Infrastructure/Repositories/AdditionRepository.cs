@@ -29,15 +29,8 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<Addition> GetAsync(Guid id)
         {
-            return (await _session.Query<AdditionPoco>().Where(a => a.Id == id)
-                .Select(a => new AdditionPoco
-                {
-                    Id = a.Id,
-                    AdditionName = a.AdditionName,
-                    Price = a.Price,
-                    AdditionKind = a.AdditionKind,
-                    ProductSales = a.ProductSales.Select(p => new ProductSalePoco { Id = p.Id })
-                }).SingleOrDefaultAsync())?.AsEntity();
+            return await _session.Query<Addition>().Where(a => a.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Addition>> GetAllAsync()

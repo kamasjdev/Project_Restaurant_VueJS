@@ -5,7 +5,7 @@ namespace Restaurant.Domain.ValueObjects
     public class EntityId : IEquatable<EntityId>
     {
         private readonly Guid _value;
-        public Guid Value { get { return _value; } }
+        public virtual Guid Value { get { return _value; } }
 
         protected EntityId() { }
 
