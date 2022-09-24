@@ -3,18 +3,20 @@ using Restaurant.Domain.ValueObjects;
 
 namespace Restaurant.Domain.Entities
 {
-    public sealed class ProductSale
+    public class ProductSale
     {
-        public EntityId Id { get; }
-        public EntityId ProductId { get; private set; }
-        public Product Product { get; private set; }
-        public EntityId AdditionId { get; private set; } = null;
-        public Addition Addition { get; private set; } = null;
-        public Price EndPrice { get; private set; } = decimal.Zero;
-        public EntityId OrderId { get; private set; }
-        public Order Order { get; private set; } = null;
-        public ProductSaleState ProductSaleState { get; private set; } = ProductSaleState.New;
-        public Email Email { get; private set; }
+        public virtual EntityId Id { get; protected set; }
+        public virtual EntityId ProductId => Product?.Id;
+        public virtual Product Product { get; protected set; }
+        public virtual EntityId AdditionId => Addition?.Id;
+        public virtual Addition Addition { get; protected set; } = null;
+        public virtual Price EndPrice { get; protected set; } = decimal.Zero;
+        public virtual EntityId OrderId => Order?.Id;
+        public virtual Order Order { get; protected set; } = null;
+        public virtual ProductSaleState ProductSaleState { get; protected set; } = ProductSaleState.New;
+        public virtual Email Email { get; protected set; }
+
+        protected ProductSale() { }
 
         public ProductSale(EntityId id, Product product, ProductSaleState productSaleState, Email email, Addition addition = null, Order order = null)
         {
@@ -26,13 +28,12 @@ namespace Restaurant.Domain.Entities
                 ChangeAddition(addition);
             }
 
-            OrderId = order?.Id;
             Order = order;
             ProductSaleState = productSaleState;
             Email = email;
         }
 
-        public void ChangeProduct(Product product)
+        public virtual void ChangeProduct(Product product)
         {
             if (product is null)
             {
@@ -45,11 +46,10 @@ namespace Restaurant.Domain.Entities
             }
 
             Product = product;
-            ProductId = product.Id;
             EndPrice += product.Price;
         }
 
-        public void ChangeAddition(Addition addition)
+        public virtual void ChangeAddition(Addition addition)
         {
             if (addition is null)
             {
@@ -62,11 +62,10 @@ namespace Restaurant.Domain.Entities
             }
 
             Addition = addition;
-            AdditionId = addition.Id;
             EndPrice += addition.Price;
         }
 
-        public void RemoveAddition()
+        public virtual void RemoveAddition()
         {
             if (Addition is null)
             {
@@ -75,10 +74,9 @@ namespace Restaurant.Domain.Entities
 
             EndPrice -= Addition.Price;
             Addition = null;
-            AdditionId = null;
         }
 
-        public void AddOrder(Order order)
+        public virtual void AddOrder(Order order)
         {
             if (order is null)
             {
@@ -91,11 +89,10 @@ namespace Restaurant.Domain.Entities
             }
 
             Order = order;
-            OrderId = order.Id;
             ProductSaleState = ProductSaleState.Ordered;
         }
 
-        public void RemoveOrder()
+        public virtual void RemoveOrder()
         {
             if (Order is null)
             {
@@ -103,11 +100,10 @@ namespace Restaurant.Domain.Entities
             }
 
             Order = null;
-            OrderId = null;
             ProductSaleState = ProductSaleState.New;
         }
 
-        public void ChangeEmail(Email email)
+        public virtual void ChangeEmail(Email email)
         {
             Email = email;
         }

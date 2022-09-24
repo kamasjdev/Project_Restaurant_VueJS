@@ -5,16 +5,18 @@ namespace Restaurant.Domain.Entities
 {
     public class Product
     {
-        public EntityId Id { get; }
-        public ProductName ProductName { get; private set; }
-        public Price Price { get; private set; }
-        public ProductKind ProductKind { get; private set; }
+        public virtual EntityId Id { get; protected set; }
+        public virtual ProductName ProductName { get; protected set; }
+        public virtual Price Price { get; protected set; }
+        public virtual ProductKind ProductKind { get; protected set; }
 
-        public IEnumerable<Order> Orders => _orders;
+        public virtual IEnumerable<Order> Orders { get { return _orders; } protected set { _orders = value.ToList(); } }
         private IList<Order> _orders = new List<Order>();
 
         private IList<EntityId> _productSaleIds = new List<EntityId>();
-        public IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+        public virtual IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+
+        protected Product() { }
 
         public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null, IEnumerable<EntityId> productSaleIds = null)
         {
@@ -36,27 +38,27 @@ namespace Restaurant.Domain.Entities
             _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
-        public void ChangePrice(Price price)
+        public virtual void ChangePrice(Price price)
         {
             Price = price;
         }
 
-        public void ChangeProductName(ProductName productName)
+        public virtual void ChangeProductName(ProductName productName)
         {
             ProductName = productName;
         }
 
-        public void ChangeProductKind(ProductKind productKind)
+        public virtual void ChangeProductKind(ProductKind productKind)
         {
             ProductKind = productKind;
         }
 
-        public void ChangeProductKind(string productKind)
+        public virtual void ChangeProductKind(string productKind)
         {
             ProductKind = ParseToProductKind(productKind);
         }
 
-        public void AddOrders(IEnumerable<Order> orders)
+        public virtual void AddOrders(IEnumerable<Order> orders)
         {
             if (orders is null)
             {
@@ -69,7 +71,7 @@ namespace Restaurant.Domain.Entities
             }
         }
 
-        public void AddOrder(Order order)
+        public virtual void AddOrder(Order order)
         {
             if (order is null)
             {

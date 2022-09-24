@@ -2,14 +2,17 @@
 
 namespace Restaurant.Domain.ValueObjects
 {
-    public sealed class OrderNumber : IEquatable<OrderNumber>
+    public class OrderNumber : IEquatable<OrderNumber>
     {
-        public string Value { get; }
+        private string _value;
+        public virtual string Value { get { return _value; } protected set { _value = value; } }
+
+        protected OrderNumber() { }
 
         public OrderNumber(string productName)
         {
             ValidProductName(productName);
-            Value = productName;
+            _value = productName;
         }
 
         public static implicit operator string(OrderNumber orderNumber)

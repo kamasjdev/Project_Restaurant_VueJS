@@ -91,7 +91,7 @@ namespace Restaurant.UnitTests.Services
 
         private Addition AddDefaultAddition(IEnumerable<EntityId> productSaleIds = null)
         {
-            var addition = new Addition(Guid.NewGuid(), "Addition#1", 10, AdditionKind.Drink, productSaleIds);
+            var addition = new Addition(Guid.NewGuid(), "Addition#1", 10, AdditionKind.Drink);
             _additonRepository.GetAsync(addition.Id).Returns(addition);
             return addition;
         }

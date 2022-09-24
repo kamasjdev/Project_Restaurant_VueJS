@@ -23,7 +23,7 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task DeleteAsync(Addition addition)
         {
-            await _session.DeleteAsync(_session.Load<AdditionPoco>(addition.Id.Value));
+            await _session.DeleteAsync(addition);
             await _session.FlushAsync();
         }
 
@@ -35,20 +35,13 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<IEnumerable<Addition>> GetAllAsync()
         {
-            return await _session.Query<AdditionPoco>()
-                .Select(a => new AdditionPoco
-                {
-                    Id = a.Id,
-                    AdditionName = a.AdditionName,
-                    Price = a.Price,
-                    AdditionKind = a.AdditionKind
-                }.AsEntity())
+            return await _session.Query<Addition>()
                 .ToListAsync();
         }
 
         public async Task UpdateAsync(Addition addition)
         {
-            await _session.MergeAsync(addition.AsPoco());
+            await _session.MergeAsync(addition);
             await _session.FlushAsync();
         }
     }

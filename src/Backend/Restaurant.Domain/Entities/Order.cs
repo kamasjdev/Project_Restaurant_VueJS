@@ -5,15 +5,17 @@ namespace Restaurant.Domain.Entities
 {
     public class Order
     {
-        public EntityId Id { get; }
-        public OrderNumber OrderNumber { get; private set; }
-        public DateTime Created { get; }
-        public Price Price { get; private set; }
-        public Email Email { get; private set; }
-        public string Note { get; private set; } = null;
+        public virtual EntityId Id { get; protected set; }
+        public virtual OrderNumber OrderNumber { get; protected set; }
+        public virtual DateTime Created { get; protected set; }
+        public virtual Price Price { get; protected set; }
+        public virtual Email Email { get; protected set; }
+        public virtual string Note { get; protected set; } = null;
 
-        public IEnumerable<ProductSale> Products => _products;
+        public virtual IEnumerable<ProductSale> Products { get { return _products; } protected set { _products = value.ToList(); } }
         private IList<ProductSale> _products = new List<ProductSale>();
+
+        protected Order() { }
 
         public Order(EntityId id, OrderNumber orderNumber, DateTime created, Price price, Email email, string note = null, IEnumerable<ProductSale> products = null)
         {
@@ -31,27 +33,27 @@ namespace Restaurant.Domain.Entities
             Note = note;
         }
 
-        public void ChangeOrderNumber(string orderNumber)
+        public virtual void ChangeOrderNumber(string orderNumber)
         {
             OrderNumber = orderNumber;
         }
 
-        public void ChangePrice(decimal price)
+        public virtual void ChangePrice(decimal price)
         {
             Price = price;
         }
 
-        public void ChangeEmail(Email email)
+        public virtual void ChangeEmail(Email email)
         {
             Email = email;
         }
 
-        public void ChangeNote(string note)
+        public virtual void ChangeNote(string note)
         {
             Note = note;
         }
 
-        public void AddProducts(IEnumerable<ProductSale> products)
+        public virtual void AddProducts(IEnumerable<ProductSale> products)
         {
             if (products is null)
             {
@@ -64,7 +66,7 @@ namespace Restaurant.Domain.Entities
             }
         }
 
-        public void AddProduct(ProductSale product)
+        public virtual void AddProduct(ProductSale product)
         {
             if (product is null)
             {
@@ -82,7 +84,7 @@ namespace Restaurant.Domain.Entities
             product.AddOrder(this);
         }
 
-        public void RemoveProduct(ProductSale product)
+        public virtual void RemoveProduct(ProductSale product)
         {
             if (product is null)
             {

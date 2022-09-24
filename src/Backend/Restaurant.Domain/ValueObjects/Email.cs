@@ -3,12 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace Restaurant.Domain.ValueObjects
 {
-    public sealed class Email : IEquatable<Email>
+    public class Email : IEquatable<Email>
     {
         public const string EMAIL_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
-        private readonly string _email;
+        private string _email;
 
-        public string Value => _email;
+        public virtual string Value { get { return _email; } protected set { _email = value; } }
+
+        protected Email() { }
 
         public Email(string email)
         {

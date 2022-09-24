@@ -31,7 +31,7 @@ namespace Restaurant.Application.Services
                 throw new AdditionNotFoundException(id);
             }
 
-            if (addition.ProductSaleIds.Any())
+            if (addition.ProductSales.Any())
             {
                 throw new CannotDeleteAdditionOrderedException(id);
             }
