@@ -12,7 +12,16 @@ namespace Restaurant.Domain.Entities
         public virtual Email Email { get; protected set; }
         public virtual string Note { get; protected set; } = null;
 
-        public virtual IEnumerable<ProductSale> Products { get { return _products; } protected set { _products = value.ToList(); } }
+        public virtual IEnumerable<ProductSale> Products { get { return _products; } 
+            protected set 
+            {
+                if (value.Any())
+                {
+                    _products = value.ToList();
+                }
+            } 
+        }
+
         private IList<ProductSale> _products = new List<ProductSale>();
 
         protected Order() { }

@@ -1,4 +1,5 @@
-﻿using NHibernate.Mapping.ByCode;
+﻿using NHibernate.Collection.Generic;
+using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Type;
 using Restaurant.Domain.Entities;
@@ -58,7 +59,7 @@ namespace Restaurant.Infrastructure.Configurations
             {
                 map.Table("ProductSales");
                 map.Key(k => k.Column(col => col.Name("ProductId")));
-            }, map => map.ManyToMany(many => many.Column("OrderId")));
+            }, map => map.ManyToMany(many => many.Column("OrderId")));;
         }
     }
 }

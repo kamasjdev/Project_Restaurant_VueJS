@@ -9,5 +9,6 @@ namespace Restaurant.Domain.Repositories
         Task DeleteAsync(Product product);
         Task<Product> GetAsync(Guid id);
         Task<IEnumerable<Product>> GetAllAsync();
+        Task<bool> ExistsProductSalesAsync(Guid id);
     }
 }

@@ -24,8 +24,7 @@ namespace Restaurant.Infrastructure.Mappings
         public static Product AsEntity(this ProductPoco productPoco)
         {
             return new Product(productPoco.Id, productPoco.ProductName, productPoco.Price, productPoco.ProductKind,
-                productPoco.ProductSales?.Select(o => o.Order?.AsEntity()),
-                productPoco.ProductSales?.Select(p => new EntityId(p.Id)));
+                productPoco.ProductSales?.Select(o => o.Order?.AsEntity()));
         }
 
         public static ProductPoco AsPoco(this Product product)

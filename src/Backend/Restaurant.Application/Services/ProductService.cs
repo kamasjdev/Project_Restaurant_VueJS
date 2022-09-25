@@ -32,7 +32,7 @@ namespace Restaurant.Application.Services
                 throw new ProductNotFoundException(id);
             }
 
-            if (product.ProductSaleIds.Any())
+            if (await _productRepository.ExistsProductSalesAsync(id))
             {
                 throw new CannotDeleteProductOrderedException(id);
             }

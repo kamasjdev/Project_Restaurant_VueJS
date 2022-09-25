@@ -11,7 +11,15 @@ namespace Restaurant.Domain.Entities
         public virtual AdditionKind AdditionKind { get; protected set; }
 
         private IList<ProductSale> _productSaleIds = new List<ProductSale>();
-        public virtual IEnumerable<ProductSale> ProductSales { get { return _productSaleIds; } protected set { _productSaleIds = value.ToList(); } }
+        public virtual IEnumerable<ProductSale> ProductSales { get { return _productSaleIds; } 
+            protected set 
+            {
+                if (value.Any())
+                {
+                    _productSaleIds = value.ToList();
+                }
+            } 
+        }
 
         protected Addition() { }
 

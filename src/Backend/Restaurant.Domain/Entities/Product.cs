@@ -10,32 +10,35 @@ namespace Restaurant.Domain.Entities
         public virtual Price Price { get; protected set; }
         public virtual ProductKind ProductKind { get; protected set; }
 
-        public virtual IEnumerable<Order> Orders { get { return _orders; } protected set { _orders = value.ToList(); } }
         private IList<Order> _orders = new List<Order>();
-
-        private IList<EntityId> _productSaleIds = new List<EntityId>();
-        public virtual IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
+        public virtual IEnumerable<Order> Orders { get { return _orders; } 
+            protected set 
+            {
+                if (value.Any())
+                {
+                    _orders = value.ToList(); 
+                }
+            } 
+        }
 
         protected Product() { }
 
-        public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null, IEnumerable<EntityId> productSaleIds = null)
+        public Product(EntityId id, ProductName productName, Price price, ProductKind productKind, IEnumerable<Order> orders = null)
         {
             Id = id;
             ChangeProductName(productName);
             ChangePrice(price);
             _orders = orders?.ToList() ?? new List<Order>();
             ProductKind = productKind;
-            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
-        public Product(EntityId id, ProductName productName, Price price, string productKind, IEnumerable<Order> orders = null, IEnumerable<EntityId> productSaleIds = null)
+        public Product(EntityId id, ProductName productName, Price price, string productKind, IEnumerable<Order> orders = null)
         {
             Id = id;
             ChangeProductName(productName);
             ChangePrice(price);
             _orders = orders?.ToList() ?? new List<Order>();
             ProductKind = ParseToProductKind(productKind);
-            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
         }
 
         public virtual void ChangePrice(Price price)

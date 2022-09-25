@@ -38,19 +38,20 @@ namespace Restaurant.Infrastructure.Repositories
         {
             return await _session.Query<Addition>()
                 .Where(a => a.Id == id)
-                .Select(a => new Addition(a.Id, a.AdditionName, a.Price, a.AdditionKind, null))
+                .Select(a => new Addition(a.Id, a.AdditionName, a.Price, a.AdditionKind, a.ProductSales))
                 .SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Addition>> GetAllAsync()
         {
             return await _session.Query<Addition>()
+                .Select(a => new Addition(a.Id, a.AdditionName, a.Price, a.AdditionKind, null))
                 .ToListAsync();
         }
 
         public async Task UpdateAsync(Addition addition)
         {
-            await _session.MergeAsync(addition);
+            await _session.UpdateAsync(addition);
             await _session.FlushAsync();
         }
     }

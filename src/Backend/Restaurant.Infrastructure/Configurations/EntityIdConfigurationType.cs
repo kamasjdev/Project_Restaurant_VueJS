@@ -11,7 +11,7 @@ namespace Restaurant.Infrastructure.Configurations
     {
         public SqlType[] SqlTypes => new[] { SqlTypeFactory.Guid };
 
-        public Type ReturnedType => typeof(EntityIdConfigurationType);
+        public Type ReturnedType => typeof(EntityId);
 
         public bool IsMutable => false;
 
@@ -44,9 +44,12 @@ namespace Restaurant.Infrastructure.Configurations
 
         public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
-            var obj = (Guid)NHibernateUtil.Guid.NullSafeGet(rs, names[0], session);
-            if (obj == Guid.Empty) return null;
-            return new EntityId(obj);
+            var obj = NHibernateUtil.Guid.NullSafeGet(rs, names[0], session);
+            if (obj is null) 
+                return null;
+            var id = (Guid)obj;
+            if (id == Guid.Empty) return null;
+            return new EntityId(id);
         }
 
         public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
