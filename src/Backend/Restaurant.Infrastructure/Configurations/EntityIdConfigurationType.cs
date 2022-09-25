@@ -54,6 +54,13 @@ namespace Restaurant.Infrastructure.Configurations
 
         public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
+            if (value is null)
+            {
+                object nullValue = DBNull.Value;
+                NHibernateUtil.Guid.NullSafeSet(cmd, nullValue, index, session);
+                return;
+            }
+
             var type = value.GetType();
 
             if (type == typeof(Guid))

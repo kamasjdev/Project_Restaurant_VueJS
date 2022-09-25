@@ -2,7 +2,6 @@
 using NHibernate.Linq;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
-using Restaurant.Infrastructure.Mappings;
 
 namespace Restaurant.Infrastructure.Repositories
 {
@@ -38,7 +37,9 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _session.Query<Product>().ToListAsync();
+            return await _session.Query<Product>()
+                .Select(p => new Product(p.Id, p.ProductName, p.Price, p.ProductKind, null))
+                .ToListAsync();
         }
 
         public async Task UpdateAsync(Product product)

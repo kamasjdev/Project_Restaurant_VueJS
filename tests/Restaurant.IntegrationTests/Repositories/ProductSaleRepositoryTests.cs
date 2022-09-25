@@ -47,11 +47,8 @@ namespace Restaurant.IntegrationTests.Repositories
             Assert.NotNull(productSaleUpdated);
             Assert.Equal(productSale.AdditionId.Value, productSaleUpdated.AdditionId.Value);
             Assert.Equal(productSale.Email, productSaleUpdated.Email);
-            Assert.Equal(productSale.OrderId.Value, productSaleUpdated.OrderId.Value);
             Assert.NotNull(productSaleUpdated.Addition);
-            Assert.Equal(productSale.Addition.Id.Value, productSaleUpdated.Addition.Id.Value);
             Assert.NotNull(productSaleUpdated.Order);
-            Assert.Equal(productSale.Order.Id.Value, productSaleUpdated.Order.Id.Value);
         }
 
         [Fact]

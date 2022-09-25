@@ -59,6 +59,7 @@ namespace Restaurant.Infrastructure.Configurations
             {
                 map.Table("ProductSales");
                 map.Key(k => k.Column(col => col.Name("ProductId")));
+                map.BatchSize(25);
             }, map => map.ManyToMany(many => many.Column("OrderId")));;
         }
     }

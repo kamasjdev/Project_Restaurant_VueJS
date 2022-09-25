@@ -17,84 +17,60 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task AddAsync(ProductSale productSale)
         {
-            await _session.SaveAsync(productSale.AsPoco());
+            await _session.SaveAsync(productSale);
             await _session.FlushAsync();
         }
 
         public async Task DeleteAsync(ProductSale productSale)
         {
-            await _session.DeleteAsync(_session.Load<ProductSalePoco>(productSale.Id.Value));
+            await _session.DeleteAsync(productSale);
             await _session.FlushAsync();
         }
 
         public async Task<ProductSale> GetAsync(Guid id)
         {
-            return (await _session.Query<ProductSalePoco>().Where(p => p.Id == id)
-                .Select(p => new ProductSalePoco
-                {
-                    Id = p.Id,
-                    EndPrice = p.EndPrice,
-                    ProductSaleState = p.ProductSaleState,
-                    Email = p.Email,
-                    Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
-                    Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
-                }).SingleOrDefaultAsync())?.AsEntity();
+            return (await _session.Query<ProductSale>().Where(p => p.Id == id)
+                .Select(p => new ProductSale(p.Id, 
+                    new Product(p.Product.Id, p.Product.ProductName, p.Product.Price, p.Product.ProductKind, null),
+                    p.ProductSaleState, p.Email, 
+                    p.Addition != null ? new Addition(p.Addition.Id, p.Addition.AdditionName, p.Addition.Price, p.Addition.AdditionKind, null) : null,
+                    p.Order != null ? new Order(p.Order.Id, p.Order.OrderNumber, p.Order.Created, p.Order.Price, p.Order.Email, p.Order.Note, null) : null))
+                .SingleOrDefaultAsync());
         }
 
         public async Task<IEnumerable<ProductSale>> GetAllAsync()
         {
-            return await _session.Query<ProductSalePoco>()
-                .Select(p => new ProductSalePoco
-                {
-                    Id = p.Id,
-                    EndPrice = p.EndPrice,
-                    ProductSaleState = p.ProductSaleState,
-                    Email = p.Email,
-                    Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
-                    Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
-                }.AsEntity())
+            return await _session.Query<ProductSale>()
                 .ToListAsync();
         }
 
         public async Task UpdateAsync(ProductSale productSale)
         {
-            await _session.MergeAsync(productSale.AsPoco());
+            await _session.UpdateAsync(productSale);
             await _session.FlushAsync();
         }
 
         public async Task<IEnumerable<ProductSale>> GetAllByOrderIdAsync(Guid orderId)
         {
-            return await _session.Query<ProductSalePoco>()
+            return await _session.Query<ProductSale>()
                 .Where(p => p.Order.Id == orderId)
-                .Select(p => new ProductSalePoco
-                {
-                    Id = p.Id,
-                    EndPrice = p.EndPrice,
-                    ProductSaleState = p.ProductSaleState,
-                    Email = p.Email,
-                    Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
-                    Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
-                }.AsEntity())
+                .Select(p => new ProductSale(p.Id,
+                    new Product(p.Product.Id, p.Product.ProductName, p.Product.Price, p.Product.ProductKind, null),
+                    p.ProductSaleState, p.Email,
+                    p.Addition != null ? new Addition(p.Addition.Id, p.Addition.AdditionName, p.Addition.Price, p.Addition.AdditionKind, null) : null,
+                    p.Order != null ? new Order(p.Order.Id, p.Order.OrderNumber, p.Order.Created, p.Order.Price, p.Order.Email, p.Order.Note, null) : null))
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<ProductSale>> GetAllByOrderIdAsync(string email)
         {
-            return await _session.Query<ProductSalePoco>()
-                .Where(p => p.Email == email)
-                .Select(p => new ProductSalePoco
-                {
-                    Id = p.Id,
-                    EndPrice = p.EndPrice,
-                    ProductSaleState = p.ProductSaleState,
-                    Email = p.Email,
-                    Product = new ProductPoco { Id = p.Product.Id, Price = p.Product.Price, ProductKind = p.Product.ProductKind, ProductName = p.Product.ProductName },
-                    Addition = p.Addition != null ? new AdditionPoco { Id = p.Addition.Id, AdditionKind = p.Addition.AdditionKind, AdditionName = p.Addition.AdditionName, Price = p.Addition.Price } : null,
-                    Order = p.Order != null ? new OrderPoco { Id = p.Order.Id, OrderNumber = p.Order.OrderNumber, Created = p.Order.Created, Email = p.Order.Email, Note = p.Order.Note, Price = p.Order.Price } : null
-                }.AsEntity())
+            return await _session.Query<ProductSale>()
+                .Where(p => p.Email.Value == email)
+                .Select(p => new ProductSale(p.Id,
+                    new Product(p.Product.Id, p.Product.ProductName, p.Product.Price, p.Product.ProductKind, null),
+                    p.ProductSaleState, p.Email,
+                    p.Addition != null ? new Addition(p.Addition.Id, p.Addition.AdditionName, p.Addition.Price, p.Addition.AdditionKind, null) : null,
+                    p.Order != null ? new Order(p.Order.Id, p.Order.OrderNumber, p.Order.Created, p.Order.Price, p.Order.Email, p.Order.Note, null) : null))
                 .ToListAsync();
         }
     }

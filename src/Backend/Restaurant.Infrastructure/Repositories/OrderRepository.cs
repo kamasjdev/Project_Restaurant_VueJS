@@ -17,14 +17,13 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task AddAsync(Order order)
         {
-            var orderPoco = order.AsPoco();
-            await _session.SaveAsync(orderPoco);
+            await _session.SaveAsync(order);
             await _session.FlushAsync();
         }
 
         public async Task DeleteAsync(Order order)
         {
-            await _session.DeleteAsync(_session.Load<OrderPoco>(order.Id.Value));
+            await _session.DeleteAsync(order);
             await _session.FlushAsync();
         }
 

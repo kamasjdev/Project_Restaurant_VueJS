@@ -17,7 +17,7 @@ GET {{url}}
 GET {{url}}/additions
 
 ###
-GET {{url}}/additions/27455716-07e0-44e4-9d1b-1b69ee84b68e
+GET {{url}}/additions/{{additionId}}
 
 ###
 POST {{url}}/additions
