@@ -60,6 +60,7 @@ namespace Restaurant.Application.Services
 
             addition.ChangeAdditionName(additionDto.AdditionName);
             addition.ChangePrice(additionDto.Price);
+            addition.ChangeAdditionKind(additionDto.AdditionKind);
 
             await _additonRepository.UpdateAsync(addition);
         }

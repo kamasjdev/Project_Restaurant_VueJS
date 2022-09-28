@@ -8,7 +8,7 @@ namespace Restaurant.Domain.Entities
         public EntityId Id { get; }
         public AdditionName AdditionName { get; private set; }
         public Price Price { get; private set; }
-        public AdditionKind AdditionKind { get; }
+        public AdditionKind AdditionKind { get; private set; }
 
         private IList<EntityId> _productSaleIds = new List<EntityId>();
         public IEnumerable<EntityId> ProductSaleIds => _productSaleIds;
@@ -27,6 +27,22 @@ namespace Restaurant.Domain.Entities
             Id = id;
             ChangeAdditionName(additionName);
             ChangePrice(price);
+            ChangeAdditionKind(additionKind);
+            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
+        }
+
+        public void ChangeAdditionName(AdditionName additionName)
+        {
+            AdditionName = additionName;
+        }
+
+        public void ChangePrice(Price price)
+        {
+            Price = price;
+        }
+
+        public void ChangeAdditionKind(string additionKind)
+        {
             var parsed = Enum.TryParse<AdditionKind>(additionKind, out var additionKindParsed);
 
             if (!parsed)
@@ -40,17 +56,6 @@ namespace Restaurant.Domain.Entities
             }
 
             AdditionKind = additionKindParsed;
-            _productSaleIds = productSaleIds?.ToList() ?? new List<EntityId>();
-        }
-
-        public void ChangeAdditionName(AdditionName additionName)
-        {
-            AdditionName = additionName;
-        }
-
-        public void ChangePrice(Price price)
-        {
-            Price = price;
         }
     }
 }

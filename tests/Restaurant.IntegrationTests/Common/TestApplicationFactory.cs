@@ -8,7 +8,6 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Restaurant.IntegrationTests.Common
 {
