@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Domain.Entities;
+﻿using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
 using Restaurant.IntegrationTests.Common;
 using System;
@@ -70,9 +69,9 @@ namespace Restaurant.IntegrationTests.Repositories
 
         private readonly IAdditonRepository _additionRepository;
 
-        public AdditionRepositoryTests(TestApplicationFactory<Program> factory)
+        public AdditionRepositoryTests(TestApplicationFactory<Program> factory) : base(factory)
         {
-            _additionRepository = factory.Services.GetRequiredService<IAdditonRepository>();
+            _additionRepository = GetService<IAdditonRepository>();
         }
     }
 }

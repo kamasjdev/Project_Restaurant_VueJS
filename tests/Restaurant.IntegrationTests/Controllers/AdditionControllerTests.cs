@@ -6,7 +6,6 @@ using Restaurant.Domain.Repositories;
 using Restaurant.IntegrationTests.Common;
 using Shouldly;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -76,6 +75,17 @@ namespace Restaurant.IntegrationTests.Controllers
         }
 
         [Fact]
+        public async Task should_delete_addition_and_return_200()
+        {
+            var addition = await AddDefaultAddition();
+
+            await _client.Request($"{Path}/{addition.Id.Value}").DeleteAsync();
+
+            var additionDeleted = await _additionRepository.GetAsync(addition.Id.Value);
+            additionDeleted.ShouldBeNull();
+        }
+
+        [Fact]
         public async Task should_get_addition_and_return_200()
         {
             var addition = await AddDefaultAddition();
@@ -119,14 +129,12 @@ namespace Restaurant.IntegrationTests.Controllers
             return addition;
         }
 
-        private readonly IFlurlClient _client;
         private const string Path = "/api/additions";
         private IAdditonRepository _additionRepository;
 
-        public AdditionControllerTests(TestApplicationFactory<Program> factory)
+        public AdditionControllerTests(TestApplicationFactory<Program> factory) : base(factory)
         {
-            _additionRepository = factory.Services.GetRequiredService<IAdditonRepository>();
-            _client = new FlurlClient(factory.Client);
+            _additionRepository = GetRequiredService<IAdditonRepository>();
         }
     }
 }

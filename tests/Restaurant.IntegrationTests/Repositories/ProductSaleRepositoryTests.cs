@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Domain.Entities;
+﻿using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
 using Restaurant.Domain.ValueObjects;
 using Restaurant.IntegrationTests.Common;
@@ -111,12 +110,12 @@ namespace Restaurant.IntegrationTests.Repositories
         private readonly IAdditonRepository _additionRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public ProductSaleRepositoryTests(TestApplicationFactory<Program> factory)
+        public ProductSaleRepositoryTests(TestApplicationFactory<Program> factory) : base(factory)
         {
-            _productRepository = factory.Services.GetRequiredService<IProductRepository>();
-            _productSaleRepository = factory.Services.GetRequiredService<IProductSaleRepository>();
-            _additionRepository = factory.Services.GetRequiredService<IAdditonRepository>();
-            _orderRepository = factory.Services.GetRequiredService<IOrderRepository>();
+            _productRepository = GetRequiredService<IProductRepository>();
+            _productSaleRepository = GetRequiredService<IProductSaleRepository>();
+            _additionRepository = GetRequiredService<IAdditonRepository>();
+            _orderRepository = GetRequiredService<IOrderRepository>();
         }
     }
 }

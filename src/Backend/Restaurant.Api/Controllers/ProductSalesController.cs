@@ -50,7 +50,7 @@ namespace Restaurant.Api.Controllers
         public async Task<ActionResult> Delete(Guid productSaleId)
         {
             await _productSaleService.DeleteAsync(productSaleId);
-            return NoContent();
+            return Ok();
         }
     }
 }

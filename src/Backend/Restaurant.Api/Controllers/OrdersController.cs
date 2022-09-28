@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Abstractions;
 using Restaurant.Application.DTO;
 
@@ -13,6 +14,7 @@ namespace Restaurant.Api.Controllers
             _orderService = orderService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<OrderDto>> GetAll()
         {
@@ -32,6 +34,7 @@ namespace Restaurant.Api.Controllers
             return CreatedAtAction(nameof(Get), new { orderId = addOrderDto.Id }, null);
         }
 
+        [Authorize]
         [HttpPut("{orderId:guid}")]
         public async Task<ActionResult> Update(Guid orderId, AddOrderDto addOrderDto)
         {
@@ -40,6 +43,7 @@ namespace Restaurant.Api.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{orderId:guid}")]
         public async Task<ActionResult> Delete(Guid orderId)
         {

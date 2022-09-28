@@ -28,6 +28,7 @@ namespace Restaurant.Api.Controllers
             return OkOrNotFound(await _userService.GetAsync(userId));
         }
 
+        [Authorize]
         [HttpGet("me")]
         public async Task<ActionResult<UserDto>> Get()
         {

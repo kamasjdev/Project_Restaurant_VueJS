@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Application.Abstractions;
+﻿using Restaurant.Application.Abstractions;
 using Restaurant.Domain.Entities;
 using Restaurant.Domain.Repositories;
 using Restaurant.Domain.ValueObjects;
@@ -108,10 +107,10 @@ namespace Restaurant.IntegrationTests.Repositories
         private readonly IUserRepository _userRepository;
         private readonly IPasswordManager _passwordManager;
 
-        public UserRepositoryTests(TestApplicationFactory<Program> factory)
+        public UserRepositoryTests(TestApplicationFactory<Program> factory) : base(factory)
         {
-            _userRepository = factory.Services.GetRequiredService<IUserRepository>();
-            _passwordManager = factory.Services.GetRequiredService<IPasswordManager>();
+            _userRepository = GetService<IUserRepository>();
+            _passwordManager = GetService<IPasswordManager>();
         }
     }
 }
