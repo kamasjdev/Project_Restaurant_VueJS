@@ -49,7 +49,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_product_and_return_staus_code_204()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
             var dto = new ProductDto { ProductName = "Product#1", Price = 20, ProductKind = ProductKind.MainDish.ToString() };
 
             var response = await _client.Request($"{Path}/{product.Id.Value}").PutJsonAsync(dto);
@@ -60,7 +60,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_product_and_return_from_db()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
             var dto = new ProductDto { ProductName = "Product#1", Price = 20, ProductKind = ProductKind.MainDish.ToString() };
 
             await _client.Request($"{Path}/{product.Id.Value}").PutJsonAsync(dto);
@@ -76,7 +76,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_delete_product_and_return_200()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
             
             await _client.Request($"{Path}/{product.Id.Value}").DeleteAsync();
 
@@ -87,7 +87,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_product_and_return_200()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
 
             var response = await _client.Request($"{Path}/{product.Id.Value}").GetAsync();
             var dto = await response.ResponseMessage.Content.ReadFromJsonAsync<ProductDto>();
@@ -104,9 +104,9 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_all_products()
         {
-            await AddDefaultProduct();
-            await AddDefaultProduct();
-            await AddDefaultProduct();
+            await AddDefaultProductAsync();
+            await AddDefaultProductAsync();
+            await AddDefaultProductAsync();
 
             var response = await _client.Request(Path).GetAsync();
             var dtos = await response.ResponseMessage.Content.ReadFromJsonAsync<IEnumerable<ProductDto>>();
@@ -118,7 +118,7 @@ namespace Restaurant.IntegrationTests.Controllers
             dtos.Count().ShouldBeGreaterThan(0);
         }
 
-        private async Task<Product> AddDefaultProduct()
+        private async Task<Product> AddDefaultProductAsync()
         {
             var random = new Random();
             var cost = random.Next(10, 200);

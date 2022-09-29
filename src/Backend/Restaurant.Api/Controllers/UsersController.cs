@@ -56,7 +56,7 @@ namespace Restaurant.Api.Controllers
 
         [Authorize]
         [HttpPost("change-email")]
-        public async Task<ActionResult> ChangeEmailAsync(string email)
+        public async Task<ActionResult> ChangeEmailAsync(ChangeEmailDto changeEmailDto)
         {
             if (string.IsNullOrWhiteSpace(User.Identity?.Name))
             {
@@ -64,13 +64,13 @@ namespace Restaurant.Api.Controllers
             }
 
             var userId = Guid.Parse(User.Identity?.Name);
-            await _userService.ChangeEmailAsync(new ChangeEmailDto(userId, email));
+            await _userService.ChangeEmailAsync(new ChangeEmailDto(userId, changeEmailDto.Email));
             return Ok();
         }
 
         [Authorize]
         [HttpPost("change-password")]
-        public async Task<ActionResult> ChangePasswordAsync(string password, string newPassword, string newPasswordConfirm)
+        public async Task<ActionResult> ChangePasswordAsync(ChangePasswordDto changePasswordDto)
         {
             if (string.IsNullOrWhiteSpace(User.Identity?.Name))
             {
@@ -78,7 +78,7 @@ namespace Restaurant.Api.Controllers
             }
 
             var userId = Guid.Parse(User.Identity?.Name);
-            await _userService.ChangePasswordAsync(new ChangePasswordDto(userId, password, newPassword, newPasswordConfirm));
+            await _userService.ChangePasswordAsync(new ChangePasswordDto(userId, changePasswordDto.Password, changePasswordDto.NewPassword, changePasswordDto.NewPasswordConfirm));
             return Ok();
         }
 

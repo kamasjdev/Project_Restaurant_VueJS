@@ -21,7 +21,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_add_product_sale_with_product_and_return_201()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
             var email = "test@test.com";
             var dto = new AddProductSaleDto() { Email = email, ProductId = product.Id };
 
@@ -36,7 +36,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_add_product_sale_with_product_and_return_from_db()
         {
-            var product = await AddDefaultProduct();
+            var product = await AddDefaultProductAsync();
             var email = "test@test.com";
             var dto = new AddProductSaleDto() { Email = email, ProductId = product.Id };
 
@@ -55,8 +55,8 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_add_product_sale_with_product_and_Addition_and_return_201()
         {
-            var product = await AddDefaultProduct();
-            var addition = await AddDefaultAddition();
+            var product = await AddDefaultProductAsync();
+            var addition = await AddDefaultAdditionAsync();
             var email = "test@test.com";
             var dto = new AddProductSaleDto() { Email = email, ProductId = product.Id, AdditionId = addition.Id };
 
@@ -71,8 +71,8 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_add_product_sale_with_product_and_Addition_and_return_from_db()
         {
-            var product = await AddDefaultProduct();
-            var addition = await AddDefaultAddition();
+            var product = await AddDefaultProductAsync();
+            var addition = await AddDefaultAdditionAsync();
             var email = "test@test.com";
             var dto = new AddProductSaleDto() { Email = email, ProductId = product.Id, AdditionId = addition.Id };
 
@@ -91,7 +91,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_product_sale_and_return_204()
         {
-            var productSale = await AddDefaultProductSale();
+            var productSale = await AddDefaultProductSaleAsync();
             var dto = new AddProductSaleDto() { Email = "emailtestabc@test.com", ProductId = productSale.Product.Id };
 
             var response = await _client.Request($"{Path}/{productSale.Id.Value}").PutJsonAsync(dto);
@@ -103,7 +103,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_product_sale_and_return_from_db()
         {
-            var productSale = await AddDefaultProductSale();
+            var productSale = await AddDefaultProductSaleAsync();
             var dto = new AddProductSaleDto() { Email = "emailtestabc@test.com", ProductId = productSale.Product.Id };
 
             var response = await _client.Request($"{Path}/{productSale.Id.Value}").PutJsonAsync(dto);
@@ -122,7 +122,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_delete_product_sale_and_return_200()
         {
-            var productSale = await AddDefaultProductSale();
+            var productSale = await AddDefaultProductSaleAsync();
             
             var response = await _client.Request($"{Path}/{productSale.Id.Value}").DeleteAsync();
 
@@ -135,7 +135,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_product_sale_by_id_and_return_200()
         {
-            var productSale = await AddDefaultProductSale();
+            var productSale = await AddDefaultProductSaleAsync();
 
             var response = await _client.Request($"{Path}/{productSale.Id.Value}").GetAsync();
 
@@ -155,8 +155,8 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_product_sales_by_email_and_return_200()
         {
-            var productSale = await AddDefaultProductSale();
-            await AddDefaultProductSale();
+            var productSale = await AddDefaultProductSaleAsync();
+            await AddDefaultProductSaleAsync();
 
             var response = await _client.Request($"{Path}/by-email/{productSale.Email.Value}").GetAsync();
 
@@ -182,16 +182,16 @@ namespace Restaurant.IntegrationTests.Controllers
             dtos.ShouldNotBeEmpty();
         }
 
-        private async Task<ProductSale> AddDefaultProductSale()
+        private async Task<ProductSale> AddDefaultProductSaleAsync()
         {
-            var product = await AddDefaultProduct();
-            var addition = await AddDefaultAddition();
+            var product = await AddDefaultProductAsync();
+            var addition = await AddDefaultAdditionAsync();
             var productSale = new ProductSale(Guid.NewGuid(), product, ProductSaleState.New, Email.Of("test@test.com"), addition);
             await _productSaleRepository.AddAsync(productSale);
             return productSale;
         }
 
-        private async Task<Product> AddDefaultProduct()
+        private async Task<Product> AddDefaultProductAsync()
         {
             var random = new Random();
             var cost = random.Next(10, 200);
@@ -207,7 +207,7 @@ namespace Restaurant.IntegrationTests.Controllers
             return product;
         }
 
-        private async Task<Addition> AddDefaultAddition()
+        private async Task<Addition> AddDefaultAdditionAsync()
         {
             var random = new Random();
             var cost = random.Next(1, 20);

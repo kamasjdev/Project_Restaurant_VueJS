@@ -50,7 +50,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_addition_and_return_staus_code_204()
         {
-            var addition = await AddDefaultAddition();
+            var addition = await AddDefaultAdditionAsync();
             var dto = new AdditionDto { AdditionName = "AdName123", Price = 19.99M, AdditionKind = AdditionKind.Drink.ToString() };
 
             var response = await _client.Request($"{Path}/{addition.Id.Value}").PutJsonAsync(dto);
@@ -61,7 +61,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_update_addition_and_return_from_db()
         {
-            var addition = await AddDefaultAddition();
+            var addition = await AddDefaultAdditionAsync();
             var dto = new AdditionDto { AdditionName = "AdaName123", Price = 15.99M, AdditionKind = AdditionKind.Drink.ToString() };
 
             await _client.Request($"{Path}/{addition.Id.Value}").PutJsonAsync(dto);
@@ -77,7 +77,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_delete_addition_and_return_200()
         {
-            var addition = await AddDefaultAddition();
+            var addition = await AddDefaultAdditionAsync();
 
             await _client.Request($"{Path}/{addition.Id.Value}").DeleteAsync();
 
@@ -88,7 +88,7 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_addition_and_return_200()
         {
-            var addition = await AddDefaultAddition();
+            var addition = await AddDefaultAdditionAsync();
 
             var response = await _client.Request($"{Path}/{addition.Id.Value}").GetAsync();
             var dto = await response.ResponseMessage.Content.ReadFromJsonAsync<AdditionDto>();
@@ -105,9 +105,9 @@ namespace Restaurant.IntegrationTests.Controllers
         [Fact]
         public async Task should_get_all_additions()
         {
-            await AddDefaultAddition();
-            await AddDefaultAddition();
-            await AddDefaultAddition();
+            await AddDefaultAdditionAsync();
+            await AddDefaultAdditionAsync();
+            await AddDefaultAdditionAsync();
 
             var response = await _client.Request(Path).GetAsync();
             var dtos = await response.ResponseMessage.Content.ReadFromJsonAsync<IEnumerable<AdditionDto>>();
@@ -119,7 +119,7 @@ namespace Restaurant.IntegrationTests.Controllers
             dtos.Count().ShouldBeGreaterThan(0);
         }
 
-        private async Task<Addition> AddDefaultAddition()
+        private async Task<Addition> AddDefaultAdditionAsync()
         {
             var random = new Random();
             var cost = random.Next(1, 20);

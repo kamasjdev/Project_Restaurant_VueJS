@@ -49,7 +49,7 @@ namespace Restaurant.Application.Services
             var newPassword = new Password(changePasswordDto.NewPassword);
             var newPasswordConfirm = new Password(changePasswordDto.NewPasswordConfirm);
 
-            if (newPassword != newPasswordConfirm)
+            if (!newPassword.Equals(newPasswordConfirm))
             {
                 throw new NewPasswordsAreNotSameException();
             }
@@ -59,12 +59,12 @@ namespace Restaurant.Application.Services
                 throw new InvalidCredentialsException();
             }
 
-            if (password == newPassword)
+            if (password.Equals(newPassword.Value))
             {
                 return;
             }
 
-            var securedPassword = _passwordManager.Secure(password);
+            var securedPassword = _passwordManager.Secure(changePasswordDto.NewPassword);
             user.ChangePassword(securedPassword);
             await _userRepository.UpdateAsync(user);
         }
