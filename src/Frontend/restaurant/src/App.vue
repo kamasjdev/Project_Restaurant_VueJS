@@ -26,7 +26,6 @@ export default {
         const authenticated = authService.isLogged();
         if (!authenticated) {
           if (this.isAuthenticated) {
-            console.log('logout and redirect to home');
             this.$router.push('/');
           }
 
