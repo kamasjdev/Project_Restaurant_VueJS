@@ -1,6 +1,6 @@
 # Project_Restaurant_VueJS
 
-Projekt zawiera aplikację serwerową oraz aplikację Web kliencką. Domena opiera się na prostym modelu zamawianiu produktów. System ma możliwość wysłania zamówienia na maila. Technologie użyte:
+Projekt zawiera aplikację serwerową oraz aplikację Web kliencką. Domena opiera się na prostym modelu - klient zamawian produkty, które wystawia uprawniony użytkownik. System ma możliwość wysłania zamówienia na maila. Technologie użyte:
 
 - Net 6
 - NHibernate
@@ -44,3 +44,5 @@ Napisana w Vue 3, zawiera prosty mechanizm logowania do systemu.
 ![](screen13.png)
 
 ![](screen14.png)
+
+![](screen15.png)
