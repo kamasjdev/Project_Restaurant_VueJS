@@ -19,6 +19,12 @@ Napisana w Vue 3, zawiera prosty mechanizm logowania do systemu.
 
 # Screen
 
+Mail z potwierdzeniem zamówienia
+
+![](screen15.png)
+
+Screeny aplikacji
+
 ![](screen1.png)
 
 ![](screen2.png)
@@ -44,5 +50,3 @@ Napisana w Vue 3, zawiera prosty mechanizm logowania do systemu.
 ![](screen13.png)
 
 ![](screen14.png)
-
-![](screen15.png)
